@@ -27,11 +27,10 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:10px;
 }
 
-.top h1{
-  font-size:22px;
-}
+.top h1{font-size:22px}
 
 .top a{
   color:#6f665f;
@@ -46,6 +45,14 @@ body{
   margin:16px 0;
 }
 
+input[type="password"],
+input[type="text"]{
+  width:100%;
+  padding:12px;
+  border:1px solid #d8cec7;
+  border-radius:10px;
+}
+
 button{
   width:100%;
   border:0;
@@ -57,17 +64,9 @@ button{
   font-size:16px;
 }
 
-button:disabled{
-  opacity:.5;
-}
+button:disabled{opacity:.5}
 
-input[type="password"],
-input[type="text"]{
-  width:100%;
-  padding:12px;
-  border:1px solid #d8cec7;
-  border-radius:10px;
-}
+.hidden{display:none!important}
 
 .muted{
   color:#7c736c;
@@ -75,11 +74,6 @@ input[type="text"]{
   line-height:1.6;
 }
 
-.hidden{
-  display:none!important;
-}
-
-/* 選照片 */
 .select-area{
   border:2px dashed #cfc3ba;
   border-radius:15px;
@@ -94,12 +88,13 @@ input[type="text"]{
   margin-top:12px;
 }
 
-.selected-count{
+.count{
   margin-top:12px;
   font-weight:700;
 }
 
-.preview-grid{
+.preview-grid,
+.existing-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:10px;
@@ -110,7 +105,8 @@ input[type="text"]{
   position:relative;
 }
 
-.preview-item img{
+.preview-item img,
+.existing-item img{
   display:block;
   width:100%;
   aspect-ratio:1/1;
@@ -129,18 +125,21 @@ input[type="text"]{
   font-size:12px;
 }
 
-/* 現有照片 */
-.existing-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
+.status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#f5f0ec;
+  font-size:13px;
 }
 
-.existing-item img{
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-  border-radius:12px;
+.danger{
+  background:#8a3f35;
+  margin-top:10px;
+}
+
+.existing-item{
+  min-width:0;
 }
 
 .delete{
@@ -150,24 +149,11 @@ input[type="text"]{
   background:#8a3f35;
 }
 
-.status{
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#f5f0ec;
-  font-size:13px;
-}
-
 @media(max-width:650px){
-
-  .preview-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
+  .preview-grid,
   .existing-grid{
     grid-template-columns:repeat(2,1fr);
   }
-
 }
 </style>
 </head>
@@ -204,8 +190,6 @@ input[type="text"]{
 </div>
 
 
-<!-- 後台 -->
-
 <div id="app" class="hidden">
 
 
@@ -215,39 +199,21 @@ input[type="text"]{
 
   <h2>店家設定</h2>
 
-  <label class="muted">
-    營業時間
-  </label>
+  <div class="muted">營業時間</div>
 
-  <input
-    id="hours"
-    type="text"
-    value="12:00～04:00"
-  >
+  <input id="hours" type="text">
 
-  <label
-    class="muted"
-    style="display:block;margin-top:12px"
-  >
+  <div class="muted" style="margin-top:12px">
     電話
-  </label>
+  </div>
 
-  <input
-    id="phone"
-    type="text"
-  >
+  <input id="phone" type="text">
 
-  <label
-    class="muted"
-    style="display:block;margin-top:12px"
-  >
+  <div class="muted" style="margin-top:12px">
     LINE
-  </label>
+  </div>
 
-  <input
-    id="line"
-    type="text"
-  >
+  <input id="line" type="text">
 
   <button
     onclick="saveSettings()"
@@ -263,23 +229,21 @@ input[type="text"]{
 
 <div class="panel">
 
-  <h2>📷 今日報班照片</h2>
+  <h2>📷 今日報班</h2>
 
   <div class="muted">
-    不需要輸入編號、國籍、時間或介紹。
+    一次最多選擇 8 張美容師照片。
     <br>
-    一次最多選擇 8 張照片。
+    不需要輸入編號、國籍、時間或介紹。
   </div>
 
 
   <div class="select-area">
 
-    <strong>
-      一次選擇多張照片
-    </strong>
+    <strong>一次選擇多張照片</strong>
 
     <div class="muted">
-      點擊下面按鈕後，在手機相簿一次勾選多張。
+      點擊選擇檔案後，可以從手機相簿一次勾選多張。
     </div>
 
     <input
@@ -292,7 +256,7 @@ input[type="text"]{
 
     <div
       id="count"
-      class="selected-count"
+      class="count"
     >
       尚未選擇照片
     </div>
@@ -320,14 +284,22 @@ input[type="text"]{
     class="status hidden"
   ></div>
 
+
+  <button
+    class="danger"
+    onclick="clearToday()"
+  >
+    🗑️ 一鍵清除今日報班
+  </button>
+
 </div>
 
 
-<!-- 已有照片 -->
+<!-- 今日照片 -->
 
 <div class="panel">
 
-  <h2>🖼️ 目前照片</h2>
+  <h2>🖼️ 今日照片</h2>
 
   <div
     id="list"
@@ -340,7 +312,6 @@ input[type="text"]{
 
 
 </div>
-
 </div>
 
 
@@ -354,23 +325,9 @@ let db = null;
 let selectedFiles = [];
 
 
-/* =========================
-   API
-========================= */
-
-function authHeaders(){
-
-  return {
-    "Authorization":
-      "Bearer " + token
-  };
-
-}
-
-
-/* =========================
-   登入
-========================= */
+/* -------------------------
+登入
+------------------------- */
 
 async function login(){
 
@@ -381,73 +338,49 @@ async function login(){
       .trim();
 
   if(!password){
-
     alert("請輸入管理員密碼");
-
     return;
   }
-
 
   try{
 
     const r =
-      await fetch(
-        "/api/login",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-              password
-            })
-        }
-      );
-
+      await fetch("/api/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+        body:
+          JSON.stringify({password})
+      });
 
     const data =
       await r.json();
 
-
     if(!r.ok){
-
-      alert(
-        data.error ||
-        "密碼錯誤"
-      );
-
+      alert(data.error || "密碼錯誤");
       return;
     }
 
-
-    token =
-      data.token;
+    token = data.token;
 
     localStorage.muyuToken =
       token;
 
-
     showApp();
-
 
   }catch(e){
 
-    alert(
-      "無法連線到伺服器"
-    );
+    alert("無法連線到伺服器");
 
   }
-
 }
 
 
-/* =========================
-   顯示後台
-========================= */
+/* -------------------------
+顯示後台
+------------------------- */
 
 function showApp(){
 
@@ -466,31 +399,42 @@ function showApp(){
 }
 
 
-/* =========================
-   載入資料
-========================= */
+/* -------------------------
+驗證
+------------------------- */
+
+function authHeaders(){
+
+  return {
+    "Authorization":
+      "Bearer " + token
+  };
+
+}
+
+
+/* -------------------------
+讀取資料
+------------------------- */
 
 async function load(){
 
   try{
 
     const r =
-      await fetch(
-        "/api/site"
-      );
+      await fetch("/api/site");
 
+    const data =
+      await r.json();
 
     if(!r.ok){
-
       throw new Error(
+        data.error ||
         "資料讀取失敗"
       );
-
     }
 
-
-    db =
-      await r.json();
+    db = data;
 
 
     document
@@ -512,13 +456,13 @@ async function load(){
       db.settings?.line || "";
 
 
-    renderExisting();
-
+    renderToday();
 
   }catch(e){
 
     alert(
-      "資料讀取失敗"
+      "資料讀取失敗：" +
+      e.message
     );
 
   }
@@ -526,9 +470,9 @@ async function load(){
 }
 
 
-/* =========================
-   選擇照片
-========================= */
+/* -------------------------
+選照片
+------------------------- */
 
 function selectPhotos(event){
 
@@ -536,24 +480,6 @@ function selectPhotos(event){
     Array.from(
       event.target.files || []
     );
-
-
-  if(files.length === 0){
-
-    selectedFiles = [];
-
-    document
-      .getElementById("count")
-      .textContent =
-      "尚未選擇照片";
-
-    document
-      .getElementById("preview")
-      .innerHTML =
-      "";
-
-    return;
-  }
 
 
   if(files.length > 8){
@@ -587,20 +513,20 @@ function selectPhotos(event){
   document
     .getElementById("count")
     .textContent =
-    `已選擇 ${files.length} 張照片`;
+    files.length
+      ? `已選擇 ${files.length} 張照片`
+      : "尚未選擇照片";
 
 
   const preview =
     document
       .getElementById("preview");
 
-
-  preview.innerHTML =
-    "";
+  preview.innerHTML = "";
 
 
   files.forEach(
-    (file,index) => {
+    (file,index)=>{
 
       const item =
         document.createElement(
@@ -628,7 +554,6 @@ function selectPhotos(event){
           "img"
         );
 
-
       img.src =
         URL.createObjectURL(
           file
@@ -636,7 +561,6 @@ function selectPhotos(event){
 
 
       item.appendChild(number);
-
       item.appendChild(img);
 
       preview.appendChild(item);
@@ -647,9 +571,9 @@ function selectPhotos(event){
 }
 
 
-/* =========================
-   壓縮照片
-========================= */
+/* -------------------------
+壓縮
+------------------------- */
 
 function compressImage(file){
 
@@ -661,49 +585,36 @@ function compressImage(file){
 
 
       reader.onload =
-        function(e){
+        e=>{
 
           const img =
             new Image();
 
 
           img.onload =
-            function(){
+            ()=>{
 
-              const maxSize =
-                1000;
+              const max = 1000;
 
-              let width =
-                img.width;
-
-              let height =
-                img.height;
+              let w = img.width;
+              let h = img.height;
 
 
-              if(
-                width > maxSize ||
-                height > maxSize
-              ){
+              if(w > max || h > max){
 
-                if(width >= height){
+                if(w >= h){
 
-                  height =
-                    height *
-                    maxSize /
-                    width;
+                  h =
+                    h * max / w;
 
-                  width =
-                    maxSize;
+                  w = max;
 
                 }else{
 
-                  width =
-                    width *
-                    maxSize /
-                    height;
+                  w =
+                    w * max / h;
 
-                  height =
-                    maxSize;
+                  h = max;
 
                 }
 
@@ -715,12 +626,11 @@ function compressImage(file){
                   "canvas"
                 );
 
-
               canvas.width =
-                Math.round(width);
+                Math.round(w);
 
               canvas.height =
-                Math.round(height);
+                Math.round(h);
 
 
               const ctx =
@@ -738,14 +648,12 @@ function compressImage(file){
               );
 
 
-              const result =
+              resolve(
                 canvas.toDataURL(
                   "image/jpeg",
                   0.65
-                );
-
-
-              resolve(result);
+                )
+              );
 
             };
 
@@ -770,17 +678,15 @@ function compressImage(file){
 }
 
 
-/* =========================
-   批次上傳
-========================= */
+/* -------------------------
+批次上傳
+------------------------- */
 
 async function uploadPhotos(){
 
   if(!selectedFiles.length){
 
-    alert(
-      "請先選擇照片"
-    );
+    alert("請先選擇照片");
 
     return;
   }
@@ -790,14 +696,12 @@ async function uploadPhotos(){
     document
       .getElementById("upload");
 
-
   const status =
     document
       .getElementById("status");
 
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
   status.classList
     .remove("hidden");
@@ -809,28 +713,26 @@ async function uploadPhotos(){
 
 
     for(
-      let i = 0;
-      i < selectedFiles.length;
+      let i=0;
+      i<selectedFiles.length;
       i++
     ){
 
       status.textContent =
-        `正在處理照片 ${i+1} / ${selectedFiles.length}...`;
+        `正在處理第 ${i+1} / ${selectedFiles.length} 張照片...`;
 
 
-      const photo =
+      photos.push(
         await compressImage(
           selectedFiles[i]
-        );
-
-
-      photos.push(photo);
+        )
+      );
 
     }
 
 
     status.textContent =
-      "正在一次儲存全部照片...";
+      "正在儲存照片...";
 
 
     const r =
@@ -841,7 +743,6 @@ async function uploadPhotos(){
 
           headers:{
             ...authHeaders(),
-
             "Content-Type":
               "application/json"
           },
@@ -869,27 +770,24 @@ async function uploadPhotos(){
 
 
     status.textContent =
-      `完成！已新增 ${photos.length} 張照片。`;
+      `成功！已新增 ${data.count || photos.length} 張照片。`;
 
 
     alert(
-      `成功新增 ${photos.length} 張照片`
+      `成功！已新增 ${data.count || photos.length} 張照片。`
     );
 
 
-    document
-      .getElementById("photos")
-      .value =
-      "";
-
     selectedFiles = [];
 
+    document
+      .getElementById("photos")
+      .value = "";
 
     document
       .getElementById("count")
       .textContent =
       "尚未選擇照片";
-
 
     document
       .getElementById("preview")
@@ -902,17 +800,13 @@ async function uploadPhotos(){
 
   }catch(e){
 
-    console.error(e);
-
     status.textContent =
       "上傳失敗";
-
 
     alert(
       "上傳失敗：" +
       e.message
     );
-
 
   }finally{
 
@@ -924,28 +818,37 @@ async function uploadPhotos(){
 }
 
 
-/* =========================
-   顯示現有照片
-========================= */
+/* -------------------------
+顯示今日照片
+------------------------- */
 
-function renderExisting(){
+function renderToday(){
 
   const list =
     document
       .getElementById("list");
 
 
+  const today =
+    new Date()
+      .toISOString()
+      .slice(0,10);
+
+
   const photos =
     (db.beauticians || [])
       .filter(
-        x => x.photo
+        x =>
+          x.today &&
+          x.uploadDate === today &&
+          x.photo
       );
 
 
   if(!photos.length){
 
     list.innerHTML =
-      '<div class="muted">目前沒有照片</div>';
+      '<div class="muted">今天尚未上傳報班照片。</div>';
 
     return;
   }
@@ -960,7 +863,7 @@ function renderExisting(){
 
           <img
             src="${x.photo}"
-            alt="美容師照片"
+            alt="今日報班照片"
           >
 
           <button
@@ -979,9 +882,9 @@ function renderExisting(){
 }
 
 
-/* =========================
-   刪除照片
-========================= */
+/* -------------------------
+刪除單張
+------------------------- */
 
 async function deletePhoto(id){
 
@@ -990,7 +893,6 @@ async function deletePhoto(id){
       "確定要刪除這張照片嗎？"
     )
   ){
-
     return;
   }
 
@@ -1002,9 +904,7 @@ async function deletePhoto(id){
         "/api/beauticians/" + id,
         {
           method:"DELETE",
-
-          headers:
-            authHeaders()
+          headers:authHeaders()
         }
       );
 
@@ -1025,7 +925,6 @@ async function deletePhoto(id){
 
     await load();
 
-
   }catch(e){
 
     alert(
@@ -1038,9 +937,70 @@ async function deletePhoto(id){
 }
 
 
-/* =========================
-   儲存店家設定
-========================= */
+/* -------------------------
+一鍵清除今日
+------------------------- */
+
+async function clearToday(){
+
+  if(
+    !confirm(
+      "確定要清除今天全部報班照片嗎？\n\n刪除後無法復原。"
+    )
+  ){
+    return;
+  }
+
+
+  try{
+
+    const r =
+      await fetch(
+        "/api/beauticians/today",
+        {
+          method:"DELETE",
+          headers:authHeaders()
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.error ||
+        "清除失敗"
+      );
+
+    }
+
+
+    alert(
+      `已清除 ${data.count || 0} 張今日報班照片。`
+    );
+
+
+    await load();
+
+
+  }catch(e){
+
+    alert(
+      "清除失敗：" +
+      e.message
+    );
+
+  }
+
+}
+
+
+/* -------------------------
+店家設定
+------------------------- */
 
 async function saveSettings(){
 
@@ -1054,7 +1014,6 @@ async function saveSettings(){
 
           headers:{
             ...authHeaders(),
-
             "Content-Type":
               "application/json"
           },
@@ -1097,8 +1056,11 @@ async function saveSettings(){
 
 
     alert(
-      "店家設定已儲存"
+      "店家設定已成功儲存"
     );
+
+
+    await load();
 
 
   }catch(e){
@@ -1113,9 +1075,9 @@ async function saveSettings(){
 }
 
 
-/* =========================
-   自動登入
-========================= */
+/* -------------------------
+自動登入
+------------------------- */
 
 if(token){
 

@@ -1,12 +1,14 @@
 {
-  "name": "muyu-spa",
-  "version": "1.0.0",
+  "name": "muyu-spa-cloudflare",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
-    "start": "node server.js"
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
-    "express": "^4.21.2",
-    "multer": "^1.4.5-lts.1"
+    "hono": "^4.9.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.33.0"
   }
 }

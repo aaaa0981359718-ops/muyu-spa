@@ -1,8 +1,1053 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>莯浴 SPA｜管理後台</title><style>body{margin:0;background:#f6f2ef;color:#282421;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}.wrap{max-width:900px;margin:auto;padding:22px 16px}.top{display:flex;justify-content:space-between;align-items:center}.panel{background:#fff;border:1px solid #e5ddd7;border-radius:18px;padding:20px;margin:18px 0}input,textarea,button{font:inherit;width:100%;padding:11px;border:1px solid #d8cec7;border-radius:10px;box-sizing:border-box}textarea{min-height:90px}label{display:block;font-size:13px;color:#6f665f;margin:12px 0 6px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{background:#2b2724;color:#fff;font-weight:700}.item{border-top:1px solid #eee5df;padding:18px 0}.item img{width:110px;height:110px;object-fit:cover;border-radius:12px}.actions{display:flex;gap:8px;margin-top:10px}.actions button:last-child{background:#8a3f35}.hidden{display:none}.muted{color:#7c736c;font-size:13px}@media(max-width:650px){.row{grid-template-columns:1fr}}</style></head><body><div class="wrap"><div class="top"><h1>莯浴 SPA｜管理後台</h1><a href="/">← 回網站</a></div><div id="login" class="panel"><h2>管理員登入</h2><input id="pw" type="password" placeholder="管理員密碼"><button onclick="login()" style="margin-top:12px">登入</button></div><div id="app" class="hidden"><div class="panel"><h2>店家設定</h2><div class="row"><div><label>營業時間</label><input id="hours"></div><div><label>電話</label><input id="phone"></div></div><label>LINE</label><input id="line"><button onclick="saveSettings()" style="margin-top:12px">儲存</button></div><div class="panel"><h2>新增美容師</h2><form id="add"><div class="row"><div><label>編號</label><input name="no" required></div><div><label>名稱</label><input name="name" value="美容師"></div></div><div class="row"><div><label>國籍</label><input name="nationality" placeholder="例如 🇹🇼 台灣"></div><div><label>上班時間</label><input name="time" placeholder="14:00～23:00"></div></div><label>介紹</label><textarea name="intro"></textarea><label>照片網址</label><input name="photo" placeholder="先用圖片網址；正式 R2 上傳功能下一階段加入"><label><input name="today" type="checkbox" checked style="width:auto"> 顯示於今日報班</label><button style="margin-top:12px">新增</button></form></div><div class="panel"><h2>美容師資料</h2><div id="list"></div></div></div></div><script>
-let token=localStorage.muyuToken||"",db;const $=s=>document.querySelector(s);const H=()=>({"Authorization":"Bearer "+token});
-async function login(){const r=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("#pw").value})});if(!r.ok)return alert("密碼錯誤");token=(await r.json()).token;localStorage.muyuToken=token;show()}function show(){$("#login").classList.add("hidden");$("#app").classList.remove("hidden");load()}
-async function load(){db=await fetch("/api/site").then(r=>r.json());$("#hours").value=db.settings.businessHours||"";$("#phone").value=db.settings.phone||"";$("#line").value=db.settings.line||"";$("#list").innerHTML=db.beauticians.map(x=>`<div class="item"><div style="display:flex;gap:14px">${x.photo?`<img src="${x.photo}">`:"無照片"}<div><b>${x.no}號｜${x.name}</b><div class="muted">${x.nationality||""}<br>⏰ ${x.time||""}<br>${x.today?"📋 今日報班":"未列入今日"}</div></div></div><div class="actions"><button onclick="edit('${x.id}')">編輯</button><button onclick="del('${x.id}')">刪除</button></div></div>`).join("")||"尚無資料"}async function saveSettings(){await fetch("/api/settings",{method:"POST",headers:{...H(),"Content-Type":"application/json"},body:JSON.stringify({businessHours:$("#hours").value,phone:$("#phone").value,line:$("#line").value})});alert("已儲存")}
-$("#add").onsubmit=async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));o.today=e.target.today.checked;await fetch("/api/beauticians",{method:"POST",headers:{...H(),"Content-Type":"application/json"},body:JSON.stringify(o)});e.target.reset();load()}
-async function del(id){if(confirm("確定刪除？")){await fetch("/api/beauticians/"+id,{method:"DELETE",headers:H()});load()}}
-async function edit(id){const x=db.beauticians.find(a=>a.id===id);const body={no:prompt("編號",x.no),name:prompt("名稱",x.name),nationality:prompt("國籍",x.nationality),time:prompt("時間",x.time),intro:prompt("介紹",x.intro),photo:prompt("照片網址",x.photo),today:confirm("顯示在今日報班？")};if(body.no===null)return;await fetch("/api/beauticians/"+id,{method:"PUT",headers:{...H(),"Content-Type":"application/json"},body:JSON.stringify(body)});load()}if(token)show();
-</script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>莯浴 SPA｜管理後台</title>
+
+<style>
+body{
+  margin:0;
+  background:#f6f2ef;
+  color:#282421;
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",
+  "PingFang TC","Microsoft JhengHei",sans-serif;
+}
+
+.wrap{
+  max-width:900px;
+  margin:auto;
+  padding:22px 16px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.top a{
+  color:#6f665f;
+}
+
+.panel{
+  background:#fff;
+  border:1px solid #e5ddd7;
+  border-radius:18px;
+  padding:20px;
+  margin:18px 0;
+}
+
+input,textarea,button{
+  font:inherit;
+  width:100%;
+  padding:11px;
+  border:1px solid #d8cec7;
+  border-radius:10px;
+  box-sizing:border-box;
+}
+
+textarea{
+  min-height:90px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  color:#6f665f;
+  margin:12px 0 6px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+button{
+  background:#2b2724;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.item{
+  border-top:1px solid #eee5df;
+  padding:18px 0;
+}
+
+.item img{
+  width:110px;
+  height:110px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.actions button:last-child{
+  background:#8a3f35;
+}
+
+.hidden{
+  display:none;
+}
+
+.muted{
+  color:#7c736c;
+  font-size:13px;
+}
+
+.photo-box{
+  margin-top:10px;
+  padding:14px;
+  border:1px dashed #cfc2b9;
+  border-radius:12px;
+  background:#faf8f6;
+}
+
+.photo-preview{
+  display:block;
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:14px;
+  margin:12px 0;
+}
+
+.uploading{
+  opacity:.6;
+  pointer-events:none;
+}
+
+@media(max-width:650px){
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .top{
+    align-items:flex-start;
+  }
+
+  .top h1{
+    font-size:22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="top">
+  <h1>莯浴 SPA｜管理後台</h1>
+  <a href="/">← 回網站</a>
+</div>
+
+<!-- 登入 -->
+<div id="login" class="panel">
+
+  <h2>管理員登入</h2>
+
+  <input
+    id="pw"
+    type="password"
+    placeholder="管理員密碼"
+  >
+
+  <button
+    onclick="login()"
+    style="margin-top:12px"
+  >
+    登入
+  </button>
+
+</div>
+
+
+<!-- 後台 -->
+<div id="app" class="hidden">
+
+
+<!-- 店家設定 -->
+<div class="panel">
+
+  <h2>店家設定</h2>
+
+  <div class="row">
+
+    <div>
+      <label>營業時間</label>
+      <input id="hours">
+    </div>
+
+    <div>
+      <label>電話</label>
+      <input id="phone">
+    </div>
+
+  </div>
+
+  <label>LINE</label>
+  <input id="line">
+
+  <button
+    onclick="saveSettings()"
+    style="margin-top:12px"
+  >
+    儲存設定
+  </button>
+
+</div>
+
+
+<!-- 新增美容師 -->
+<div class="panel">
+
+  <h2>新增美容師</h2>
+
+  <form id="add">
+
+    <div class="row">
+
+      <div>
+        <label>編號</label>
+        <input name="no" required>
+      </div>
+
+      <div>
+        <label>名稱</label>
+        <input name="name" value="美容師">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div>
+        <label>國籍</label>
+        <input
+          name="nationality"
+          placeholder="例如 🇹🇼 台灣"
+        >
+      </div>
+
+      <div>
+        <label>上班時間</label>
+        <input
+          name="time"
+          placeholder="14:00～23:00"
+        >
+      </div>
+
+    </div>
+
+
+    <label>介紹</label>
+
+    <textarea name="intro"></textarea>
+
+
+    <!-- 照片 -->
+    <label>美容師照片</label>
+
+    <div class="photo-box">
+
+      <input
+        id="addPhoto"
+        type="file"
+        accept="image/*"
+        onchange="previewAddPhoto(event)"
+      >
+
+      <img
+        id="addPreview"
+        class="photo-preview hidden"
+      >
+
+      <div class="muted">
+        可直接從手機相簿選擇照片。
+        系統會自動壓縮照片後保存。
+      </div>
+
+    </div>
+
+
+    <label style="display:flex;align-items:center;gap:8px">
+
+      <input
+        name="today"
+        type="checkbox"
+        checked
+        style="width:auto"
+      >
+
+      顯示於今日報班
+
+    </label>
+
+
+    <button
+      type="submit"
+      style="margin-top:12px"
+    >
+      新增美容師
+    </button>
+
+  </form>
+
+</div>
+
+
+<!-- 美容師資料 -->
+<div class="panel">
+
+  <h2>美容師資料</h2>
+
+  <div id="list">
+    載入中...
+  </div>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+let token = localStorage.muyuToken || "";
+let db;
+
+
+/* =========================
+   基本工具
+========================= */
+
+const $ = s => document.querySelector(s);
+
+function H(){
+
+  return {
+    "Authorization":
+      "Bearer " + token
+  };
+
+}
+
+
+/* =========================
+   登入
+========================= */
+
+async function login(){
+
+  const password =
+    $("#pw").value;
+
+  if(!password){
+
+    alert("請輸入管理員密碼");
+
+    return;
+  }
+
+  const r =
+    await fetch(
+      "/api/login",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            password
+          })
+      }
+    );
+
+  if(!r.ok){
+
+    alert("密碼錯誤");
+
+    return;
+  }
+
+  const data =
+    await r.json();
+
+  token =
+    data.token;
+
+  localStorage.muyuToken =
+    token;
+
+  show();
+
+}
+
+
+/* =========================
+   顯示後台
+========================= */
+
+function show(){
+
+  $("#login")
+    .classList
+    .add("hidden");
+
+  $("#app")
+    .classList
+    .remove("hidden");
+
+  load();
+
+}
+
+
+/* =========================
+   載入資料
+========================= */
+
+async function load(){
+
+  const r =
+    await fetch("/api/site");
+
+  if(!r.ok){
+
+    alert("網站資料讀取失敗");
+
+    return;
+  }
+
+  db =
+    await r.json();
+
+  $("#hours").value =
+    db.settings.businessHours || "";
+
+  $("#phone").value =
+    db.settings.phone || "";
+
+  $("#line").value =
+    db.settings.line || "";
+
+  renderList();
+
+}
+
+
+/* =========================
+   顯示美容師
+========================= */
+
+function renderList(){
+
+  const list =
+    $("#list");
+
+  if(!db.beauticians.length){
+
+    list.innerHTML =
+      "尚無美容師資料";
+
+    return;
+  }
+
+  list.innerHTML =
+    db.beauticians
+    .map(x => `
+
+      <div class="item">
+
+        <div style="
+          display:flex;
+          gap:14px;
+          align-items:flex-start;
+        ">
+
+          ${
+            x.photo
+            ?
+            `<img src="${x.photo}">`
+            :
+            `<div style="
+              width:110px;
+              height:110px;
+              border-radius:12px;
+              background:#eee8e3;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              color:#8b8179;
+            ">
+              無照片
+            </div>`
+          }
+
+          <div>
+
+            <b>
+              ${escapeHtml(x.no)}
+              號｜${escapeHtml(x.name)}
+            </b>
+
+            <div class="muted">
+
+              ${escapeHtml(x.nationality || "")}
+
+              <br>
+
+              ⏰ ${escapeHtml(x.time || "")}
+
+              <br>
+
+              ${
+                x.today
+                ?
+                "📋 今日報班"
+                :
+                "未列入今日"
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            onclick="edit('${x.id}')"
+          >
+            編輯
+          </button>
+
+          <button
+            onclick="del('${x.id}')"
+          >
+            刪除
+          </button>
+
+        </div>
+
+      </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =========================
+   HTML 安全
+========================= */
+
+function escapeHtml(value){
+
+  return String(value || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================
+   圖片壓縮
+========================= */
+
+function compressImage(file){
+
+  return new Promise((resolve,reject)=>{
+
+    const img =
+      new Image();
+
+    const reader =
+      new FileReader();
+
+    reader.onload = e => {
+
+      img.onload = () => {
+
+        const maxSize = 1200;
+
+        let width =
+          img.width;
+
+        let height =
+          img.height;
+
+        if(width > height){
+
+          if(width > maxSize){
+
+            height =
+              height *
+              maxSize /
+              width;
+
+            width =
+              maxSize;
+
+          }
+
+        }else{
+
+          if(height > maxSize){
+
+            width =
+              width *
+              maxSize /
+              height;
+
+            height =
+              maxSize;
+
+          }
+
+        }
+
+        const canvas =
+          document.createElement(
+            "canvas"
+          );
+
+        canvas.width =
+          Math.round(width);
+
+        canvas.height =
+          Math.round(height);
+
+        const ctx =
+          canvas.getContext(
+            "2d"
+          );
+
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+        const result =
+          canvas.toDataURL(
+            "image/jpeg",
+            0.78
+          );
+
+        resolve(result);
+
+      };
+
+      img.onerror =
+        reject;
+
+      img.src =
+        e.target.result;
+
+    };
+
+    reader.onerror =
+      reject;
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+
+/* =========================
+   新增照片預覽
+========================= */
+
+function previewAddPhoto(event){
+
+  const file =
+    event.target.files[0];
+
+  if(!file){
+
+    $("#addPreview")
+      .classList
+      .add("hidden");
+
+    return;
+  }
+
+  const url =
+    URL.createObjectURL(file);
+
+  $("#addPreview").src =
+    url;
+
+  $("#addPreview")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* =========================
+   店家設定
+========================= */
+
+async function saveSettings(){
+
+  const r =
+    await fetch(
+      "/api/settings",
+      {
+        method:"POST",
+
+        headers:{
+          ...H(),
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            businessHours:
+              $("#hours").value,
+
+            phone:
+              $("#phone").value,
+
+            line:
+              $("#line").value
+          })
+      }
+    );
+
+  if(!r.ok){
+
+    alert("儲存失敗");
+
+    return;
+  }
+
+  alert("店家設定已儲存");
+
+}
+
+
+/* =========================
+   新增美容師
+========================= */
+
+$("#add").onsubmit =
+async e => {
+
+  e.preventDefault();
+
+  const form =
+    e.target;
+
+  const button =
+    form.querySelector(
+      "button"
+    );
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "處理中...";
+
+
+  try{
+
+    const o =
+      Object.fromEntries(
+        new FormData(form)
+      );
+
+    o.today =
+      form.today.checked;
+
+
+    const file =
+      $("#addPhoto")
+      .files[0];
+
+    if(file){
+
+      o.photo =
+        await compressImage(file);
+
+    }else{
+
+      o.photo =
+        "";
+
+    }
+
+
+    const r =
+      await fetch(
+        "/api/beauticians",
+        {
+          method:"POST",
+
+          headers:{
+            ...H(),
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(o)
+        }
+      );
+
+
+    if(!r.ok){
+
+      const data =
+        await r.json()
+        .catch(() => ({}));
+
+      alert(
+        data.error ||
+        "新增失敗"
+      );
+
+      return;
+    }
+
+
+    alert(
+      "美容師新增成功"
+    );
+
+
+    form.reset();
+
+    $("#addPreview")
+      .classList
+      .add("hidden");
+
+    load();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "照片處理或新增失敗，請確認照片不要太大"
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "新增美容師";
+
+  }
+
+};
+
+
+/* =========================
+   刪除
+========================= */
+
+async function del(id){
+
+  if(
+    !confirm(
+      "確定要刪除這位美容師嗎？"
+    )
+  ){
+
+    return;
+  }
+
+
+  const r =
+    await fetch(
+      "/api/beauticians/" + id,
+      {
+        method:"DELETE",
+        headers:H()
+      }
+    );
+
+
+  if(!r.ok){
+
+    alert("刪除失敗");
+
+    return;
+  }
+
+
+  load();
+
+}
+
+
+/* =========================
+   編輯
+========================= */
+
+async function edit(id){
+
+  const x =
+    db.beauticians
+    .find(a => a.id === id);
+
+  if(!x){
+
+    return;
+  }
+
+
+  const no =
+    prompt(
+      "編號",
+      x.no
+    );
+
+  if(no === null){
+
+    return;
+  }
+
+
+  const name =
+    prompt(
+      "名稱",
+      x.name
+    );
+
+  if(name === null){
+
+    return;
+  }
+
+
+  const nationality =
+    prompt(
+      "國籍",
+      x.nationality
+    );
+
+  if(nationality === null){
+
+    return;
+  }
+
+
+  const time =
+    prompt(
+      "上班時間",
+      x.time
+    );
+
+  if(time === null){
+
+    return;
+  }
+
+
+  const intro =
+    prompt(
+      "介紹",
+      x.intro
+    );
+
+  if(intro === null){
+
+    return;
+  }
+
+
+  const today =
+    confirm(
+      "是否顯示在今日報班？"
+    );
+
+
+  const body = {
+
+    no,
+    name,
+    nationality,
+    time,
+    intro,
+    today
+
+  };
+
+
+  const r =
+    await fetch(
+      "/api/beauticians/" + id,
+      {
+        method:"PUT",
+
+        headers:{
+          ...H(),
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(body)
+      }
+    );
+
+
+  if(!r.ok){
+
+    alert("修改失敗");
+
+    return;
+  }
+
+
+  load();
+
+}
+
+
+/* =========================
+   自動登入
+========================= */
+
+if(token){
+
+  show();
+
+}
+
+</script>
+
+</body>
+</html>

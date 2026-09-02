@@ -6,96 +6,55 @@ const app = new Hono();
 app.use("*", cors());
 
 
-/* =========================
-   預設資料
-========================= */
-
 const seed = {
   settings: {
     businessHours: "12:00～04:00",
     phone: "",
     line: ""
   },
-
   beauticians: []
 };
 
 
-/* =========================
-   KV 讀取
-========================= */
-
 async function getDB(env){
 
   if(!env.MUYU_KV){
-
-    return seed;
-
+    throw new Error("MUYU_KV 尚未設定");
   }
-
 
   const raw =
     await env.MUYU_KV.get("site");
 
-
   if(!raw){
-
     return {
-      settings: {
-        ...seed.settings
-      },
-
-      beauticians: []
+      settings:{...seed.settings},
+      beauticians:[]
     };
-
   }
-
 
   try{
-
     return JSON.parse(raw);
-
   }catch{
-
     return {
-      settings: {
-        ...seed.settings
-      },
-
-      beauticians: []
+      settings:{...seed.settings},
+      beauticians:[]
     };
-
   }
-
 }
 
-
-/* =========================
-   KV 儲存
-========================= */
 
 async function putDB(env,db){
 
   if(!env.MUYU_KV){
-
-    throw new Error(
-      "MUYU_KV 尚未設定"
-    );
-
+    throw new Error("MUYU_KV 尚未設定");
   }
-
 
   await env.MUYU_KV.put(
     "site",
     JSON.stringify(db)
   );
-
 }
 
-
-/* =========================
-   管理員驗證
-========================= */
 
 function okAuth(c){
 
@@ -103,17 +62,12 @@ function okAuth(c){
     c.env.ADMIN_TOKEN || "";
 
   const got =
-    c.req.header(
-      "Authorization"
-    ) || "";
-
+    c.req.header("Authorization") || "";
 
   return(
     expected &&
-    got ===
-      `Bearer ${expected}`
+    got === `Bearer ${expected}`
   );
-
 }
 
 
@@ -121,135 +75,130 @@ function okAuth(c){
    取得網站資料
 ========================= */
 
-app.get(
-  "/api/site",
-  async c => {
+app.get("/api/site", async c=>{
 
-    try{
+  try{
 
-      return c.json(
-        await getDB(c.env)
-      );
+    return c.json(
+      await getDB(c.env)
+    );
 
-    }catch(e){
+  }catch(e){
 
-      return c.json(
-        {
-          error:
-            "資料讀取失敗"
-        },
-        500
-      );
-
-    }
+    return c.json(
+      {
+        error:
+          "資料讀取失敗：" +
+          e.message
+      },
+      500
+    );
 
   }
-);
+
+});
 
 
 /* =========================
    登入
 ========================= */
 
-app.post(
-  "/api/login",
-  async c => {
+app.post("/api/login", async c=>{
 
-    const body =
-      await c.req
-        .json()
-        .catch(
-          () => ({})
-        );
+  const body =
+    await c.req
+      .json()
+      .catch(()=>({}));
 
 
-    if(
-      !c.env.ADMIN_PASSWORD ||
-      body.password !==
-        c.env.ADMIN_PASSWORD
-    ){
+  if(
+    !c.env.ADMIN_PASSWORD ||
+    body.password !==
+      c.env.ADMIN_PASSWORD
+  ){
 
-      return c.json(
-        {
-          error:
-            "密碼錯誤"
-        },
-        401
-      );
-
-    }
-
-
-    return c.json({
-      token:
-        c.env.ADMIN_TOKEN || ""
-    });
+    return c.json(
+      {
+        error:"密碼錯誤"
+      },
+      401
+    );
 
   }
-);
+
+
+  return c.json({
+    token:
+      c.env.ADMIN_TOKEN || ""
+  });
+
+});
 
 
 /* =========================
    店家設定
 ========================= */
 
-app.post(
-  "/api/settings",
-  async c => {
+app.post("/api/settings", async c=>{
 
-    if(!okAuth(c)){
+  if(!okAuth(c)){
 
-      return c.json(
-        {
-          error:
-            "未授權"
-        },
-        401
-      );
-
-    }
-
-
-    try{
-
-      const db =
-        await getDB(c.env);
-
-      const body =
-        await c.req.json();
-
-
-      db.settings = {
-        ...db.settings,
-        ...body
-      };
-
-
-      await putDB(
-        c.env,
-        db
-      );
-
-
-      return c.json(
-        db.settings
-      );
-
-
-    }catch(e){
-
-      return c.json(
-        {
-          error:
-            "儲存失敗，請確認 KV 已設定"
-        },
-        500
-      );
-
-    }
+    return c.json(
+      {error:"未授權"},
+      401
+    );
 
   }
-);
+
+
+  try{
+
+    const db =
+      await getDB(c.env);
+
+    const body =
+      await c.req.json();
+
+
+    db.settings = {
+      ...db.settings,
+      businessHours:
+        body.businessHours ?? db.settings.businessHours,
+      phone:
+        body.phone ?? db.settings.phone,
+      line:
+        body.line ?? db.settings.line
+    };
+
+
+    await putDB(
+      c.env,
+      db
+    );
+
+
+    /* 直接回傳成功結果 */
+
+    return c.json({
+      ok:true,
+      settings:
+        db.settings
+    });
+
+  }catch(e){
+
+    return c.json(
+      {
+        error:
+          "店家設定儲存失敗：" +
+          e.message
+      },
+      500
+    );
+
+  }
+
+});
 
 
 /* =========================
@@ -258,15 +207,12 @@ app.post(
 
 app.post(
   "/api/beauticians/batch",
-  async c => {
+  async c=>{
 
     if(!okAuth(c)){
 
       return c.json(
-        {
-          error:
-            "未授權"
-        },
+        {error:"未授權"},
         401
       );
 
@@ -315,6 +261,12 @@ app.post(
         await getDB(c.env);
 
 
+      const today =
+        new Date()
+          .toISOString()
+          .slice(0,10);
+
+
       const items =
         photos.map(
           photo => ({
@@ -337,6 +289,9 @@ app.post(
             today:
               true,
 
+            uploadDate:
+              today,
+
             photo:
               photo
 
@@ -344,10 +299,11 @@ app.post(
         );
 
 
-      db.beauticians = [
-        ...items,
-        ...(db.beauticians || [])
-      ];
+      db.beauticians =
+        [
+          ...items,
+          ...(db.beauticians || [])
+        ];
 
 
       await putDB(
@@ -361,7 +317,6 @@ app.post(
         count:
           items.length
       });
-
 
     }catch(e){
 
@@ -381,21 +336,154 @@ app.post(
 
 
 /* =========================
-   單張新增
-   保留舊功能
+   一鍵清除今日
 ========================= */
 
-app.post(
-  "/api/beauticians",
-  async c => {
+app.delete(
+  "/api/beauticians/today",
+  async c=>{
 
     if(!okAuth(c)){
 
       return c.json(
+        {error:"未授權"},
+        401
+      );
+
+    }
+
+
+    try{
+
+      const db =
+        await getDB(c.env);
+
+
+      const today =
+        new Date()
+          .toISOString()
+          .slice(0,10);
+
+
+      const before =
+        db.beauticians.length;
+
+
+      db.beauticians =
+        db.beauticians.filter(
+          x =>
+            !(
+              x.today &&
+              x.uploadDate === today
+            )
+        );
+
+
+      const removed =
+        before -
+        db.beauticians.length;
+
+
+      await putDB(
+        c.env,
+        db
+      );
+
+
+      return c.json({
+        ok:true,
+        count:removed
+      });
+
+    }catch(e){
+
+      return c.json(
         {
           error:
-            "未授權"
+            "清除今日報班失敗：" +
+            e.message
         },
+        500
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   單張刪除
+========================= */
+
+app.delete(
+  "/api/beauticians/:id",
+  async c=>{
+
+    if(!okAuth(c)){
+
+      return c.json(
+        {error:"未授權"},
+        401
+      );
+
+    }
+
+
+    try{
+
+      const db =
+        await getDB(c.env);
+
+      const id =
+        c.req.param("id");
+
+
+      db.beauticians =
+        db.beauticians.filter(
+          x => x.id !== id
+        );
+
+
+      await putDB(
+        c.env,
+        db
+      );
+
+
+      return c.json({
+        ok:true
+      });
+
+    }catch(e){
+
+      return c.json(
+        {
+          error:
+            "刪除失敗：" +
+            e.message
+        },
+        500
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   保留舊單張新增 API
+========================= */
+
+app.post(
+  "/api/beauticians",
+  async c=>{
+
+    if(!okAuth(c)){
+
+      return c.json(
+        {error:"未授權"},
         401
       );
 
@@ -411,39 +499,39 @@ app.post(
         await getDB(c.env);
 
 
+      const today =
+        new Date()
+          .toISOString()
+          .slice(0,10);
+
+
       const item = {
 
         id:
           crypto.randomUUID(),
 
         name:
-          body.name ||
           "美容師",
 
         nationality:
-          body.nationality ||
           "",
 
         time:
-          body.time ||
           "",
 
         intro:
-          body.intro ||
           "",
 
         today:
           body.today !== false,
 
+        uploadDate:
+          today,
+
         photo:
-          body.photo ||
-          ""
+          body.photo || ""
 
       };
-
-
-      db.beauticians =
-        db.beauticians || [];
 
 
       db.beauticians.unshift(
@@ -457,8 +545,10 @@ app.post(
       );
 
 
-      return c.json(item);
-
+      return c.json({
+        ok:true,
+        item
+      });
 
     }catch(e){
 
@@ -483,15 +573,12 @@ app.post(
 
 app.put(
   "/api/beauticians/:id",
-  async c => {
+  async c=>{
 
     if(!okAuth(c)){
 
       return c.json(
-        {
-          error:
-            "未授權"
-        },
+        {error:"未授權"},
         401
       );
 
@@ -508,10 +595,9 @@ app.put(
 
 
       const index =
-        db.beauticians
-          .findIndex(
-            x => x.id === id
-          );
+        db.beauticians.findIndex(
+          x => x.id === id
+        );
 
 
       if(index < 0){
@@ -543,10 +629,11 @@ app.put(
       );
 
 
-      return c.json(
-        db.beauticians[index]
-      );
-
+      return c.json({
+        ok:true,
+        item:
+          db.beauticians[index]
+      });
 
     }catch(e){
 
@@ -566,107 +653,19 @@ app.put(
 
 
 /* =========================
-   刪除
+   前台
 ========================= */
 
-app.delete(
-  "/api/beauticians/:id",
-  async c => {
+app.all("*", async c=>{
 
-    if(!okAuth(c)){
-
-      return c.json(
-        {
-          error:
-            "未授權"
-        },
-        401
-      );
-
-    }
-
-
-    try{
-
-      const db =
-        await getDB(c.env);
-
-      const id =
-        c.req.param("id");
-
-
-      db.beauticians =
-        (db.beauticians || [])
-          .filter(
-            x => x.id !== id
-          );
-
-
-      await putDB(
-        c.env,
-        db
-      );
-
-
-      return c.json({
-        ok:true
-      });
-
-
-    }catch(e){
-
-      return c.json(
-        {
-          error:
-            "刪除失敗：" +
-            e.message
-        },
-        500
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================
-   前台靜態檔案
-========================= */
-
-app.all(
-  "*",
-  async c => {
-
-    const asset =
-      await c.env.ASSETS.fetch(
-        c.req.raw
-      );
-
-
-    if(asset.status !== 404){
-
-      return asset;
-
-    }
-
-
-    const indexRequest =
-      new Request(
-        new URL(
-          "/index.html",
-          c.req.url
-        ),
-        c.req.raw
-      );
-
-
-    return c.env.ASSETS.fetch(
-      indexRequest
+  const asset =
+    await c.env.ASSETS.fetch(
+      c.req.raw
     );
 
-  }
-);
+  return asset;
+
+});
 
 
 export default app;

@@ -6,18 +6,23 @@
 <title>莯浴 SPA｜管理後台</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   background:#f6f2ef;
   color:#282421;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",
-  "PingFang TC","Microsoft JhengHei",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Noto Sans TC","PingFang TC",
+  "Microsoft JhengHei",sans-serif;
 }
 
 .wrap{
   max-width:900px;
   margin:auto;
-  padding:22px 16px;
+  padding:20px 14px 50px;
 }
 
 .top{
@@ -27,130 +32,199 @@ body{
   gap:12px;
 }
 
+.top h1{
+  font-size:23px;
+  margin:5px 0;
+}
+
 .top a{
   color:#6f665f;
+  text-decoration:none;
 }
 
 .panel{
   background:#fff;
   border:1px solid #e5ddd7;
   border-radius:18px;
-  padding:20px;
-  margin:18px 0;
+  padding:18px;
+  margin:16px 0;
 }
 
-input,textarea,button{
+.panel h2{
+  margin-top:0;
+}
+
+input,
+button{
   font:inherit;
+}
+
+input[type="password"],
+input[type="text"]{
   width:100%;
-  padding:11px;
+  padding:12px;
   border:1px solid #d8cec7;
   border-radius:10px;
-  box-sizing:border-box;
-}
-
-textarea{
-  min-height:90px;
-}
-
-label{
-  display:block;
-  font-size:13px;
-  color:#6f665f;
-  margin:12px 0 6px;
-}
-
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
 }
 
 button{
+  border:0;
+  border-radius:10px;
+  padding:12px 16px;
   background:#2b2724;
-  color:#fff;
+  color:white;
   font-weight:700;
   cursor:pointer;
 }
 
-.item{
-  border-top:1px solid #eee5df;
-  padding:18px 0;
-}
-
-.item img{
-  width:110px;
-  height:110px;
-  object-fit:cover;
-  border-radius:12px;
-}
-
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-}
-
-.actions button:last-child{
-  background:#8a3f35;
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
 }
 
 .hidden{
-  display:none;
+  display:none !important;
 }
 
 .muted{
   color:#7c736c;
   font-size:13px;
+  line-height:1.6;
 }
 
-.photo-box{
-  margin-top:10px;
-  padding:14px;
-  border:1px dashed #cfc2b9;
-  border-radius:12px;
+
+/* 批次照片區 */
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:15px;
+}
+
+.photo-card{
+  border:1px solid #e5ddd7;
+  border-radius:14px;
+  padding:12px;
   background:#faf8f6;
 }
 
-.photo-preview{
-  display:block;
-  width:150px;
-  height:150px;
-  object-fit:cover;
-  border-radius:14px;
-  margin:12px 0;
+.photo-number{
+  font-weight:700;
+  margin-bottom:9px;
 }
 
-.uploading{
-  opacity:.6;
-  pointer-events:none;
+.photo-input{
+  width:100%;
+  padding:9px;
+  background:white;
+  border:1px solid #d8cec7;
+  border-radius:9px;
 }
+
+.preview{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:12px;
+  margin-top:10px;
+  background:#eee8e3;
+}
+
+.empty-preview{
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:12px;
+  margin-top:10px;
+  background:#eee8e3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#8b8179;
+  font-size:13px;
+}
+
+.batch-actions{
+  margin-top:16px;
+}
+
+.status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#f5f0ec;
+  color:#625951;
+  font-size:13px;
+}
+
+
+/* 已有照片 */
+
+.existing-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.existing-item{
+  position:relative;
+}
+
+.existing-item img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.delete-btn{
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  background:#8a3f35;
+  font-size:13px;
+}
+
 
 @media(max-width:650px){
-  .row{
-    grid-template-columns:1fr;
+
+  .photo-grid{
+    grid-template-columns:1fr 1fr;
   }
 
-  .top{
-    align-items:flex-start;
+  .existing-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
   .top h1{
-    font-size:22px;
+    font-size:20px;
   }
+
 }
 </style>
 </head>
+
 
 <body>
 
 <div class="wrap">
 
+
+<!-- 頂部 -->
+
 <div class="top">
+
   <h1>莯浴 SPA｜管理後台</h1>
-  <a href="/">← 回網站</a>
+
+  <a href="/">
+    ← 回網站
+  </a>
+
 </div>
 
+
 <!-- 登入 -->
+
 <div id="login" class="panel">
 
   <h2>管理員登入</h2>
@@ -163,7 +237,7 @@ button{
 
   <button
     onclick="login()"
-    style="margin-top:12px"
+    style="width:100%;margin-top:12px"
   >
     登入
   </button>
@@ -172,168 +246,357 @@ button{
 
 
 <!-- 後台 -->
+
 <div id="app" class="hidden">
 
 
 <!-- 店家設定 -->
+
 <div class="panel">
 
   <h2>店家設定</h2>
 
-  <div class="row">
+  <label class="muted">
+    營業時間
+  </label>
 
-    <div>
-      <label>營業時間</label>
-      <input id="hours">
-    </div>
+  <input
+    id="hours"
+    type="text"
+    value="12:00～04:00"
+  >
 
-    <div>
-      <label>電話</label>
-      <input id="phone">
-    </div>
+  <label class="muted"
+         style="display:block;margin-top:12px">
+    電話
+  </label>
 
-  </div>
+  <input
+    id="phone"
+    type="text"
+  >
 
-  <label>LINE</label>
-  <input id="line">
+  <label class="muted"
+         style="display:block;margin-top:12px">
+    LINE
+  </label>
+
+  <input
+    id="line"
+    type="text"
+  >
 
   <button
     onclick="saveSettings()"
-    style="margin-top:12px"
+    style="width:100%;margin-top:12px"
   >
-    儲存設定
+    儲存店家設定
   </button>
 
 </div>
 
 
-<!-- 新增美容師 -->
+<!-- 批次新增 -->
+
 <div class="panel">
 
-  <h2>新增美容師</h2>
+  <h2>📷 今日報班｜批次新增</h2>
 
-  <form id="add">
+  <div class="muted">
+    一次最多選擇 8 張美容師照片。
+    選完後按「一次上傳全部」。
+  </div>
 
-    <div class="row">
 
-      <div>
-        <label>編號</label>
-        <input name="no" required>
+  <div class="photo-grid">
+
+
+    <!-- 1 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ①
       </div>
-
-      <div>
-        <label>名稱</label>
-        <input name="name" value="美容師">
-      </div>
-
-    </div>
-
-
-    <div class="row">
-
-      <div>
-        <label>國籍</label>
-        <input
-          name="nationality"
-          placeholder="例如 🇹🇼 台灣"
-        >
-      </div>
-
-      <div>
-        <label>上班時間</label>
-        <input
-          name="time"
-          placeholder="14:00～23:00"
-        >
-      </div>
-
-    </div>
-
-
-    <label>介紹</label>
-
-    <textarea name="intro"></textarea>
-
-
-    <!-- 照片 -->
-    <label>美容師照片</label>
-
-    <div class="photo-box">
 
       <input
-        id="addPhoto"
+        class="photo-input"
         type="file"
         accept="image/*"
-        onchange="previewAddPhoto(event)"
+        onchange="previewPhoto(this,1)"
       >
+
+      <div id="empty1"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
 
       <img
-        id="addPreview"
-        class="photo-preview hidden"
+        id="preview1"
+        class="preview hidden"
       >
-
-      <div class="muted">
-        可直接從手機相簿選擇照片。
-        系統會自動壓縮照片後保存。
-      </div>
 
     </div>
 
 
-    <label style="display:flex;align-items:center;gap:8px">
+    <!-- 2 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ②
+      </div>
 
       <input
-        name="today"
-        type="checkbox"
-        checked
-        style="width:auto"
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,2)"
       >
 
-      顯示於今日報班
+      <div id="empty2"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
 
-    </label>
+      <img
+        id="preview2"
+        class="preview hidden"
+      >
 
+    </div>
+
+
+    <!-- 3 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ③
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,3)"
+      >
+
+      <div id="empty3"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview3"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+    <!-- 4 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ④
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,4)"
+      >
+
+      <div id="empty4"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview4"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+    <!-- 5 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ⑤
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,5)"
+      >
+
+      <div id="empty5"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview5"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+    <!-- 6 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ⑥
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,6)"
+      >
+
+      <div id="empty6"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview6"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+    <!-- 7 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ⑦
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,7)"
+      >
+
+      <div id="empty7"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview7"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+    <!-- 8 -->
+
+    <div class="photo-card">
+
+      <div class="photo-number">
+        ⑧
+      </div>
+
+      <input
+        class="photo-input"
+        type="file"
+        accept="image/*"
+        onchange="previewPhoto(this,8)"
+      >
+
+      <div id="empty8"
+           class="empty-preview">
+        尚未選擇照片
+      </div>
+
+      <img
+        id="preview8"
+        class="preview hidden"
+      >
+
+    </div>
+
+
+  </div>
+
+
+  <div class="batch-actions">
 
     <button
-      type="submit"
-      style="margin-top:12px"
+      id="uploadBtn"
+      onclick="uploadAll()"
+      style="width:100%"
     >
-      新增美容師
+      📤 一次上傳全部
     </button>
 
-  </form>
+  </div>
+
+
+  <div
+    id="status"
+    class="status hidden"
+  ></div>
 
 </div>
 
 
-<!-- 美容師資料 -->
+<!-- 已有照片 -->
+
 <div class="panel">
 
-  <h2>美容師資料</h2>
+  <h2>🖼️ 目前今日報班</h2>
 
-  <div id="list">
+  <div
+    id="list"
+    class="existing-grid"
+  >
     載入中...
   </div>
 
 </div>
 
+
 </div>
+
 </div>
 
 
 <script>
 
-let token = localStorage.muyuToken || "";
+let token =
+  localStorage.muyuToken || "";
+
 let db;
+
+const $ =
+  selector =>
+    document.querySelector(selector);
 
 
 /* =========================
-   基本工具
+   Authorization
 ========================= */
 
-const $ = s => document.querySelector(s);
-
-function H(){
+function headers(){
 
   return {
     "Authorization":
@@ -359,41 +622,51 @@ async function login(){
     return;
   }
 
-  const r =
-    await fetch(
-      "/api/login",
-      {
-        method:"POST",
+  try{
 
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
+    const response =
+      await fetch(
+        "/api/login",
+        {
+          method:"POST",
 
-        body:
-          JSON.stringify({
-            password
-          })
-      }
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              password
+            })
+        }
+      );
+
+    if(!response.ok){
+
+      alert("密碼錯誤");
+
+      return;
+    }
+
+    const data =
+      await response.json();
+
+    token =
+      data.token;
+
+    localStorage.muyuToken =
+      token;
+
+    showApp();
+
+  }catch(error){
+
+    alert(
+      "無法連線到網站"
     );
 
-  if(!r.ok){
-
-    alert("密碼錯誤");
-
-    return;
   }
-
-  const data =
-    await r.json();
-
-  token =
-    data.token;
-
-  localStorage.muyuToken =
-    token;
-
-  show();
 
 }
 
@@ -402,7 +675,7 @@ async function login(){
    顯示後台
 ========================= */
 
-function show(){
+function showApp(){
 
   $("#login")
     .classList
@@ -423,149 +696,142 @@ function show(){
 
 async function load(){
 
-  const r =
-    await fetch("/api/site");
+  try{
 
-  if(!r.ok){
+    const response =
+      await fetch(
+        "/api/site"
+      );
 
-    alert("網站資料讀取失敗");
+    if(!response.ok){
 
-    return;
+      alert(
+        "網站資料讀取失敗"
+      );
+
+      return;
+    }
+
+    db =
+      await response.json();
+
+
+    $("#hours").value =
+      db.settings.businessHours ||
+      "12:00～04:00";
+
+    $("#phone").value =
+      db.settings.phone || "";
+
+    $("#line").value =
+      db.settings.line || "";
+
+
+    renderPhotos();
+
+  }catch(error){
+
+    alert(
+      "資料載入失敗"
+    );
+
   }
-
-  db =
-    await r.json();
-
-  $("#hours").value =
-    db.settings.businessHours || "";
-
-  $("#phone").value =
-    db.settings.phone || "";
-
-  $("#line").value =
-    db.settings.line || "";
-
-  renderList();
 
 }
 
 
 /* =========================
-   顯示美容師
+   顯示照片
 ========================= */
 
-function renderList(){
+function renderPhotos(){
 
   const list =
     $("#list");
 
-  if(!db.beauticians.length){
+  const photos =
+    db.beauticians
+      .filter(x => x.photo);
+
+
+  if(!photos.length){
 
     list.innerHTML =
-      "尚無美容師資料";
+      '<div class="muted">目前沒有照片</div>';
 
     return;
   }
 
+
   list.innerHTML =
-    db.beauticians
-    .map(x => `
+    photos.map(
+      (x,index) => `
 
-      <div class="item">
+        <div class="existing-item">
 
-        <div style="
-          display:flex;
-          gap:14px;
-          align-items:flex-start;
-        ">
-
-          ${
-            x.photo
-            ?
-            `<img src="${x.photo}">`
-            :
-            `<div style="
-              width:110px;
-              height:110px;
-              border-radius:12px;
-              background:#eee8e3;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              color:#8b8179;
-            ">
-              無照片
-            </div>`
-          }
-
-          <div>
-
-            <b>
-              ${escapeHtml(x.no)}
-              號｜${escapeHtml(x.name)}
-            </b>
-
-            <div class="muted">
-
-              ${escapeHtml(x.nationality || "")}
-
-              <br>
-
-              ⏰ ${escapeHtml(x.time || "")}
-
-              <br>
-
-              ${
-                x.today
-                ?
-                "📋 今日報班"
-                :
-                "未列入今日"
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="actions">
+          <img
+            src="${x.photo}"
+            alt="美容師照片"
+          >
 
           <button
-            onclick="edit('${x.id}')"
+            class="delete-btn"
+            onclick="deletePhoto('${x.id}')"
           >
-            編輯
-          </button>
-
-          <button
-            onclick="del('${x.id}')"
-          >
-            刪除
+            🗑 刪除
           </button>
 
         </div>
 
-      </div>
-
-    `)
-    .join("");
+      `
+    ).join("");
 
 }
 
 
 /* =========================
-   HTML 安全
+   照片預覽
 ========================= */
 
-function escapeHtml(value){
+function previewPhoto(input,number){
 
-  return String(value || "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  const file =
+    input.files[0];
+
+  const preview =
+    $("#preview" + number);
+
+  const empty =
+    $("#empty" + number);
+
+
+  if(!file){
+
+    preview
+      .classList
+      .add("hidden");
+
+    empty
+      .classList
+      .remove("hidden");
+
+    return;
+  }
+
+
+  const url =
+    URL.createObjectURL(file);
+
+  preview.src =
+    url;
+
+  preview
+    .classList
+    .remove("hidden");
+
+  empty
+    .classList
+    .add("hidden");
 
 }
 
@@ -576,135 +842,365 @@ function escapeHtml(value){
 
 function compressImage(file){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    const img =
-      new Image();
+      const reader =
+        new FileReader();
 
-    const reader =
-      new FileReader();
+      reader.onload =
+        event => {
 
-    reader.onload = e => {
+          const img =
+            new Image();
 
-      img.onload = () => {
+          img.onload =
+            () => {
 
-        const maxSize = 1200;
+              const max =
+                1200;
 
-        let width =
-          img.width;
+              let width =
+                img.width;
 
-        let height =
-          img.height;
+              let height =
+                img.height;
 
-        if(width > height){
 
-          if(width > maxSize){
+              if(
+                width > max ||
+                height > max
+              ){
 
-            height =
-              height *
-              maxSize /
-              width;
+                if(width > height){
 
-            width =
-              maxSize;
+                  height =
+                    height *
+                    max /
+                    width;
 
-          }
+                  width =
+                    max;
 
-        }else{
+                }else{
 
-          if(height > maxSize){
+                  width =
+                    width *
+                    max /
+                    height;
 
-            width =
-              width *
-              maxSize /
-              height;
+                  height =
+                    max;
 
-            height =
-              maxSize;
+                }
 
-          }
+              }
 
-        }
 
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
+              const canvas =
+                document
+                .createElement(
+                  "canvas"
+                );
 
-        canvas.width =
-          Math.round(width);
+              canvas.width =
+                Math.round(width);
 
-        canvas.height =
-          Math.round(height);
+              canvas.height =
+                Math.round(height);
 
-        const ctx =
-          canvas.getContext(
-            "2d"
-          );
 
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
+              const ctx =
+                canvas
+                .getContext("2d");
 
-        const result =
-          canvas.toDataURL(
-            "image/jpeg",
-            0.78
-          );
 
-        resolve(result);
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
 
-      };
 
-      img.onerror =
+              resolve(
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.75
+                )
+              );
+
+            };
+
+
+          img.onerror =
+            reject;
+
+          img.src =
+            event.target.result;
+
+        };
+
+
+      reader.onerror =
         reject;
 
-      img.src =
-        e.target.result;
+      reader.readAsDataURL(file);
 
-    };
-
-    reader.onerror =
-      reject;
-
-    reader.readAsDataURL(file);
-
-  });
+    }
+  );
 
 }
 
 
 /* =========================
-   新增照片預覽
+   批次上傳
 ========================= */
 
-function previewAddPhoto(event){
+async function uploadAll(){
 
-  const file =
-    event.target.files[0];
+  const files = [];
 
-  if(!file){
 
-    $("#addPreview")
-      .classList
-      .add("hidden");
+  for(
+    let i = 1;
+    i <= 8;
+    i++
+  ){
+
+    const input =
+      document
+      .querySelector(
+        `.photo-card:nth-child(${i}) .photo-input`
+      );
+
+    if(
+      input &&
+      input.files &&
+      input.files[0]
+    ){
+
+      files.push(
+        input.files[0]
+      );
+
+    }
+
+  }
+
+
+  if(!files.length){
+
+    alert(
+      "請先選擇至少一張照片"
+    );
 
     return;
   }
 
-  const url =
-    URL.createObjectURL(file);
 
-  $("#addPreview").src =
-    url;
+  const button =
+    $("#uploadBtn");
 
-  $("#addPreview")
+  const status =
+    $("#status");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ 處理照片中...";
+
+  status
     .classList
     .remove("hidden");
+
+
+  try{
+
+    for(
+      let i = 0;
+      i < files.length;
+      i++
+    ){
+
+      status.textContent =
+        `正在處理第 ${i+1} / ${files.length} 張照片...`;
+
+
+      const photo =
+        await compressImage(
+          files[i]
+        );
+
+
+      const response =
+        await fetch(
+          "/api/beauticians",
+          {
+            method:"POST",
+
+            headers:{
+              ...headers(),
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                name:
+                  "美容師",
+                today:true,
+                photo
+              })
+          }
+        );
+
+
+      if(!response.ok){
+
+        const data =
+          await response
+          .json()
+          .catch(
+            () => ({})
+          );
+
+        throw new Error(
+          data.error ||
+          "上傳失敗"
+        );
+
+      }
+
+    }
+
+
+    status.textContent =
+      `完成！共處理 ${files.length} 張照片。`;
+
+
+    alert(
+      `已完成 ${files.length} 張照片`
+    );
+
+
+    clearPhotoInputs();
+
+    await load();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    status.textContent =
+      "上傳過程發生錯誤。";
+
+    alert(
+      "照片上傳失敗：" +
+      error.message
+    );
+
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "📤 一次上傳全部";
+
+  }
+
+}
+
+
+/* =========================
+   清除照片選擇
+========================= */
+
+function clearPhotoInputs(){
+
+  document
+    .querySelectorAll(
+      ".photo-input"
+    )
+    .forEach(
+      input => {
+        input.value = "";
+      }
+    );
+
+
+  for(
+    let i = 1;
+    i <= 8;
+    i++
+  ){
+
+    $("#preview" + i)
+      .classList
+      .add("hidden");
+
+    $("#empty" + i)
+      .classList
+      .remove("hidden");
+
+  }
+
+}
+
+
+/* =========================
+   刪除
+========================= */
+
+async function deletePhoto(id){
+
+  if(
+    !confirm(
+      "確定要刪除這張照片嗎？"
+    )
+  ){
+
+    return;
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/beauticians/" + id,
+        {
+          method:"DELETE",
+          headers:headers()
+        }
+      );
+
+
+    if(!response.ok){
+
+      alert(
+        "刪除失敗"
+      );
+
+      return;
+    }
+
+
+    await load();
+
+  }catch(error){
+
+    alert(
+      "刪除失敗"
+    );
+
+  }
 
 }
 
@@ -715,123 +1211,41 @@ function previewAddPhoto(event){
 
 async function saveSettings(){
 
-  const r =
-    await fetch(
-      "/api/settings",
-      {
-        method:"POST",
-
-        headers:{
-          ...H(),
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify({
-            businessHours:
-              $("#hours").value,
-
-            phone:
-              $("#phone").value,
-
-            line:
-              $("#line").value
-          })
-      }
-    );
-
-  if(!r.ok){
-
-    alert("儲存失敗");
-
-    return;
-  }
-
-  alert("店家設定已儲存");
-
-}
-
-
-/* =========================
-   新增美容師
-========================= */
-
-$("#add").onsubmit =
-async e => {
-
-  e.preventDefault();
-
-  const form =
-    e.target;
-
-  const button =
-    form.querySelector(
-      "button"
-    );
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "處理中...";
-
-
   try{
 
-    const o =
-      Object.fromEntries(
-        new FormData(form)
-      );
-
-    o.today =
-      form.today.checked;
-
-
-    const file =
-      $("#addPhoto")
-      .files[0];
-
-    if(file){
-
-      o.photo =
-        await compressImage(file);
-
-    }else{
-
-      o.photo =
-        "";
-
-    }
-
-
-    const r =
+    const response =
       await fetch(
-        "/api/beauticians",
+        "/api/settings",
         {
           method:"POST",
 
           headers:{
-            ...H(),
+            ...headers(),
             "Content-Type":
               "application/json"
           },
 
           body:
-            JSON.stringify(o)
+            JSON.stringify({
+
+              businessHours:
+                $("#hours").value,
+
+              phone:
+                $("#phone").value,
+
+              line:
+                $("#line").value
+
+            })
         }
       );
 
 
-    if(!r.ok){
-
-      const data =
-        await r.json()
-        .catch(() => ({}));
+    if(!response.ok){
 
       alert(
-        data.error ||
-        "新增失敗"
+        "儲存失敗"
       );
 
       return;
@@ -839,200 +1253,16 @@ async e => {
 
 
     alert(
-      "美容師新增成功"
+      "店家設定已儲存"
     );
-
-
-    form.reset();
-
-    $("#addPreview")
-      .classList
-      .add("hidden");
-
-    load();
-
 
   }catch(error){
 
-    console.error(error);
-
     alert(
-      "照片處理或新增失敗，請確認照片不要太大"
+      "儲存失敗"
     );
 
-  }finally{
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "新增美容師";
-
   }
-
-};
-
-
-/* =========================
-   刪除
-========================= */
-
-async function del(id){
-
-  if(
-    !confirm(
-      "確定要刪除這位美容師嗎？"
-    )
-  ){
-
-    return;
-  }
-
-
-  const r =
-    await fetch(
-      "/api/beauticians/" + id,
-      {
-        method:"DELETE",
-        headers:H()
-      }
-    );
-
-
-  if(!r.ok){
-
-    alert("刪除失敗");
-
-    return;
-  }
-
-
-  load();
-
-}
-
-
-/* =========================
-   編輯
-========================= */
-
-async function edit(id){
-
-  const x =
-    db.beauticians
-    .find(a => a.id === id);
-
-  if(!x){
-
-    return;
-  }
-
-
-  const no =
-    prompt(
-      "編號",
-      x.no
-    );
-
-  if(no === null){
-
-    return;
-  }
-
-
-  const name =
-    prompt(
-      "名稱",
-      x.name
-    );
-
-  if(name === null){
-
-    return;
-  }
-
-
-  const nationality =
-    prompt(
-      "國籍",
-      x.nationality
-    );
-
-  if(nationality === null){
-
-    return;
-  }
-
-
-  const time =
-    prompt(
-      "上班時間",
-      x.time
-    );
-
-  if(time === null){
-
-    return;
-  }
-
-
-  const intro =
-    prompt(
-      "介紹",
-      x.intro
-    );
-
-  if(intro === null){
-
-    return;
-  }
-
-
-  const today =
-    confirm(
-      "是否顯示在今日報班？"
-    );
-
-
-  const body = {
-
-    no,
-    name,
-    nationality,
-    time,
-    intro,
-    today
-
-  };
-
-
-  const r =
-    await fetch(
-      "/api/beauticians/" + id,
-      {
-        method:"PUT",
-
-        headers:{
-          ...H(),
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify(body)
-      }
-    );
-
-
-  if(!r.ok){
-
-    alert("修改失敗");
-
-    return;
-  }
-
-
-  load();
 
 }
 
@@ -1043,7 +1273,7 @@ async function edit(id){
 
 if(token){
 
-  show();
+  showApp();
 
 }
 

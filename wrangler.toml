@@ -7,6 +7,7 @@ directory = "./public"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 
-[[kv_namespaces]]
-binding = "MUYU_KV"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+# After deployment, create a KV namespace and replace this ID:
+# [[kv_namespaces]]
+# binding = "MUYU_KV"
+# id = "REPLACE_WITH_KV_NAMESPACE_ID"

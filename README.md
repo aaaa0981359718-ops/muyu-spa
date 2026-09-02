@@ -1,3 +1,16 @@
-# 莯浴 SPA Cloudflare 版
-此專案使用 Cloudflare Workers + KV + Assets。正式部署前需在 Cloudflare 建立 KV namespace，將 ID 填入 wrangler.toml，並設定 ADMIN_PASSWORD、ADMIN_TOKEN secrets。
-目前管理後台可管理文字資料；照片正式上傳儲存建議下一步接 Cloudflare R2。
+# 莯浴 SPA — Cloudflare 修正版
+
+GitHub 根目錄必須直接包含：
+- public/
+- worker.js
+- wrangler.toml
+- package.json
+
+Cloudflare Build settings:
+- Build command: 留空
+- Deploy command: npx wrangler deploy
+- Root directory: /
+
+這個版本修正 assets.directory 找不到 public 的問題。
+
+注意：Cloudflare KV binding 尚未建立；如果先部署，Worker 的 API 會無法正常讀寫資料。網站靜態頁面仍可部署。下一步建立 KV 後，把 wrangler.toml 的 KV 區塊加入即可。

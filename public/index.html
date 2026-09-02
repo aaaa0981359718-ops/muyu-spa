@@ -1,6 +1,654 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="莯浴 SPA｜今日報班、美容師資訊與預約資訊。營業時間 12:00～04:00。"><meta name="robots" content="index,follow"><title>莯浴 SPA｜今日報班</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f7f4f1;color:#24211f;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}a{text-decoration:none;color:inherit}.wrap{max-width:1100px;margin:auto;padding:0 20px}header{position:sticky;top:0;z-index:10;background:#f7f4f1ee;backdrop-filter:blur(12px);border-bottom:1px solid #e8e0da}.nav{height:68px;display:flex;align-items:center;justify-content:space-between}.logo{font-size:22px;font-weight:800;letter-spacing:3px}.navlinks{display:flex;gap:22px;font-size:14px;color:#5f5853}.hero{padding:70px 0 55px;background:linear-gradient(135deg,#f4ebe4,#fbfaf8 55%,#eee4dc)}h1{font-size:clamp(42px,8vw,72px);letter-spacing:5px;margin:15px 0 10px}.hero p{line-height:1.9;color:#665f59;font-size:17px}.pills{display:flex;gap:9px;flex-wrap:wrap}.pill{padding:9px 14px;border:1px solid #d8c9bf;border-radius:999px;background:#fff8f4;font-size:13px}.btn{display:inline-block;background:#2b2724;color:white;padding:13px 20px;border-radius:999px;font-weight:700;margin-top:18px}.section{padding:55px 0}.section h2{font-size:30px;margin:0 0 7px}.sub{color:#7d756f;margin:0 0 25px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:white;border:1px solid #e8e0da;border-radius:22px;overflow:hidden;box-shadow:0 8px 30px #37261c0d}.photo{height:310px;background:linear-gradient(135deg,#e9ddd5,#d6c1b5);display:grid;place-items:center;color:#76685f}.photo img{width:100%;height:100%;object-fit:cover}.info{padding:20px}.tag{display:inline-block;background:#f1e7e1;color:#765444;border-radius:999px;padding:6px 10px;font-size:12px}.name{font-size:22px;font-weight:800;margin:9px 0}.meta{color:#746b65;line-height:1.8;font-size:14px}.time{margin-top:12px;font-weight:800;color:#805b49}.box,.notice{background:#fff;border:1px solid #e8e0da;border-radius:22px;padding:27px}.notice{margin-top:24px;background:#2b2724;color:#fff}.notice p{color:#ddd5d0;line-height:1.7}footer{padding:25px 0 70px;color:#8b817a;font-size:13px;border-top:1px solid #e8e0da}.mobilebar{display:none}@media(max-width:720px){.nav{height:60px}.navlinks{display:none}.hero{padding:50px 0 42px}.grid{grid-template-columns:1fr}.photo{height:350px}.section{padding:43px 0}.mobilebar{display:flex;position:fixed;z-index:20;bottom:0;left:0;right:0;padding:10px 14px;background:#fff;border-top:1px solid #e8e0da;gap:10px}.mobilebar a{flex:1;text-align:center;padding:12px;border-radius:12px;background:#2b2724;color:#fff;font-weight:700}.mobilebar a:first-child{background:#efe2da;color:#654838}}</style></head>
-<body><header><div class="wrap nav"><div class="logo">莯浴 SPA</div><nav class="navlinks"><a href="#today">今日報班</a><a href="#team">美容師</a><a href="#contact">預約</a><a href="/admin.html">管理後台</a></nav></div></header><section class="hero"><div class="wrap"><div class="pills"><span class="pill">📋 今日報班</span><span class="pill">📱 手機版</span><span class="pill">⏰ 12:00～04:00</span></div><h1>莯浴 SPA</h1><p>放慢腳步，把時間留給自己。<br>查看今日報班與美容師資訊，提前預約你的放鬆時光。</p><a class="btn" href="#today">查看今日報班 ↓</a></div></section><section class="section" id="today"><div class="wrap"><h2>📋 今日報班</h2><p class="sub">每日更新</p><div id="todayGrid" class="grid"></div><div class="notice"><b>✨ 每日報班即時更新</b><p>管理後台可直接新增、美容師照片、修改上班時間與介紹。</p></div></div></section><section class="section" id="team"><div class="wrap"><h2>📸 美容師</h2><p class="sub">美容師照片與介紹</p><div id="teamGrid" class="grid"></div></div></section><section class="section" id="contact"><div class="wrap"><h2>⏰ 預約資訊</h2><p class="sub">營業時間</p><div class="box"><div class="hours" id="hours">12:00～04:00</div><div class="meta">每日實際報班依當日公告為準，建議提前預約。</div></div></div></section><footer><div class="wrap">© 2026 莯浴 SPA · 今日報班與店家資訊</div></footer><div class="mobilebar"><a href="#today">📋 今日報班</a><a href="#contact">📞 預約資訊</a></div>
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<meta
+  name="description"
+  content="莯浴 SPA｜今日報班與預約資訊。營業時間 12:00～04:00。"
+>
+
+<meta
+  name="robots"
+  content="index,follow"
+>
+
+<title>莯浴 SPA｜今日報班</title>
+
+
+<style>
+
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  background:#f7f4f1;
+  color:#24211f;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans TC",
+    "PingFang TC",
+    "Microsoft JhengHei",
+    sans-serif
+}
+
+a{
+  text-decoration:none;
+  color:inherit
+}
+
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:0 20px
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#f7f4f1ee;
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid #e8e0da
+}
+
+.nav{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.logo{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:3px
+}
+
+.navlinks{
+  display:flex;
+  gap:22px;
+  font-size:14px;
+  color:#5f5853
+}
+
+.hero{
+  padding:70px 0 55px;
+  background:
+    linear-gradient(
+      135deg,
+      #f4ebe4,
+      #fbfaf8 55%,
+      #eee4dc
+    )
+}
+
+h1{
+  font-size:clamp(42px,8vw,72px);
+  letter-spacing:5px;
+  margin:15px 0 10px
+}
+
+.hero p{
+  line-height:1.9;
+  color:#665f59;
+  font-size:17px
+}
+
+.pills{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap
+}
+
+.pill{
+  padding:9px 14px;
+  border:1px solid #d8c9bf;
+  border-radius:999px;
+  background:#fff8f4;
+  font-size:13px
+}
+
+.btn{
+  display:inline-block;
+  background:#2b2724;
+  color:white;
+  padding:13px 20px;
+  border-radius:999px;
+  font-weight:700;
+  margin-top:18px
+}
+
+.section{
+  padding:55px 0
+}
+
+.section h2{
+  font-size:30px;
+  margin:0 0 7px
+}
+
+.sub{
+  color:#7d756f;
+  margin:0 0 25px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+  gap:18px
+}
+
+.card{
+  background:white;
+  border:1px solid #e8e0da;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:
+    0 8px 30px #37261c0d
+}
+
+.photo{
+  height:310px;
+  background:
+    linear-gradient(
+      135deg,
+      #e9ddd5,
+      #d6c1b5
+    );
+  display:grid;
+  place-items:center;
+  color:#76685f
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.info{
+  padding:20px
+}
+
+.tag{
+  display:inline-block;
+  background:#f1e7e1;
+  color:#765444;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px
+}
+
+.name{
+  font-size:22px;
+  font-weight:800;
+  margin:9px 0
+}
+
+.meta{
+  color:#746b65;
+  line-height:1.8;
+  font-size:14px
+}
+
+.time{
+  margin-top:12px;
+  font-weight:800;
+  color:#805b49
+}
+
+.box,
+.notice{
+  background:#fff;
+  border:1px solid #e8e0da;
+  border-radius:22px;
+  padding:27px
+}
+
+.notice{
+  margin-top:24px;
+  background:#2b2724;
+  color:#fff
+}
+
+.notice p{
+  color:#ddd5d0;
+  line-height:1.7
+}
+
+.contact-line{
+  margin-top:12px;
+  font-size:16px;
+  font-weight:700
+}
+
+footer{
+  padding:25px 0 70px;
+  color:#8b817a;
+  font-size:13px;
+  border-top:1px solid #e8e0da
+}
+
+.mobilebar{
+  display:none
+}
+
+@media(max-width:720px){
+
+  .nav{
+    height:60px
+  }
+
+  .navlinks{
+    display:none
+  }
+
+  .hero{
+    padding:50px 0 42px
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .photo{
+    height:350px
+  }
+
+  .section{
+    padding:43px 0
+  }
+
+  .mobilebar{
+    display:flex;
+    position:fixed;
+    z-index:20;
+    bottom:0;
+    left:0;
+    right:0;
+    padding:10px 14px;
+    background:#fff;
+    border-top:1px solid #e8e0da;
+    gap:10px
+  }
+
+  .mobilebar a{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    background:#2b2724;
+    color:#fff;
+    font-weight:700
+  }
+
+  .mobilebar a:first-child{
+    background:#efe2da;
+    color:#654838
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="wrap nav">
+
+<div class="logo">
+莯浴 SPA
+</div>
+
+<nav class="navlinks">
+
+<a href="#today">
+今日報班
+</a>
+
+<a href="#contact">
+預約
+</a>
+
+<a href="/admin.html">
+管理後台
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<section class="hero">
+
+<div class="wrap">
+
+<div class="pills">
+
+<span class="pill">
+📋 今日報班
+</span>
+
+<span class="pill">
+📱 手機版
+</span>
+
+<span class="pill">
+⏰ 12:00～04:00
+</span>
+
+</div>
+
+
+<h1>
+莯浴 SPA
+</h1>
+
+
+<p>
+放慢腳步，把時間留給自己。<br>
+查看今日報班與預約資訊，提前預約你的放鬆時光。
+</p>
+
+
+<a
+  class="btn"
+  href="#today"
+>
+查看今日報班 ↓
+</a>
+
+</div>
+
+</section>
+
+
+<!-- 今日報班 -->
+
+<section
+  class="section"
+  id="today"
+>
+
+<div class="wrap">
+
+<h2>
+📋 今日報班
+</h2>
+
+<p class="sub">
+每日更新
+</p>
+
+
+<div
+  id="todayGrid"
+  class="grid"
+>
+載入中...
+</div>
+
+
+<div class="notice">
+
+<b>
+✨ 每日報班即時更新
+</b>
+
+<p>
+每日實際報班依當日公告為準，建議提前預約。
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- 預約 -->
+
+<section
+  class="section"
+  id="contact"
+>
+
+<div class="wrap">
+
+<h2>
+⏰ 預約資訊
+</h2>
+
+<p class="sub">
+營業時間與聯絡方式
+</p>
+
+
+<div class="box">
+
+<div
+  class="hours"
+  id="hours"
+>
+12:00～04:00
+</div>
+
+
+<div
+  class="contact-line"
+  id="phone"
+>
+</div>
+
+
+<div
+  class="contact-line"
+  id="line"
+>
+</div>
+
+
+<div class="meta">
+每日實際報班依當日公告為準，建議提前預約。
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<div class="wrap">
+© 2026 莯浴 SPA · 今日報班與店家資訊
+</div>
+
+</footer>
+
+
+<div class="mobilebar">
+
+<a href="#today">
+📋 今日報班
+</a>
+
+<a href="#contact">
+📞 預約資訊
+</a>
+
+</div>
+
+
 <script>
-async function load(){const d=await fetch("/api/site").then(r=>r.json());document.querySelector("#hours").textContent=d.settings.businessHours||"12:00～04:00";const render=x=>`<article class="card"><div class="photo">${x.photo?`<img src="${x.photo}" alt="${x.no}號美容師照片">`:"美容師照片"}</div><div class="info"><span class="tag">${x.today?"今日上班":"美容師"}</span><div class="name">${x.no?x.no+"號｜":""}${x.name}</div><div class="meta">${x.nationality||""}<br>${x.intro||""}</div>${x.time?`<div class="time">⏰ ${x.time}</div>`:""}</div></article>`;document.querySelector("#todayGrid").innerHTML=d.beauticians.filter(x=>x.today).map(render).join("")||"<div class='box'>今日尚未公告報班。</div>";document.querySelector("#teamGrid").innerHTML=d.beauticians.map(render).join("")||"<div class='box'>美容師資料尚未建立。</div>"}load();
-</script></body></html>
+
+async function load(){
+
+  try{
+
+    const r =
+      await fetch(
+        "/api/site"
+      );
+
+
+    const d =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        d.error ||
+        "資料讀取失敗"
+      );
+
+    }
+
+
+    /* -------------------------
+       店家設定
+    ------------------------- */
+
+    document
+      .getElementById("hours")
+      .textContent =
+      d.settings?.businessHours ||
+      "12:00～04:00";
+
+
+    const phone =
+      d.settings?.phone ||
+      "";
+
+
+    const line =
+      d.settings?.line ||
+      "";
+
+
+    document
+      .getElementById("phone")
+      .textContent =
+      phone
+        ? "📞 " + phone
+        : "";
+
+
+    document
+      .getElementById("line")
+      .textContent =
+      line
+        ? "💬 LINE：" + line
+        : "";
+
+
+    /* -------------------------
+       今天日期
+    ------------------------- */
+
+    const today =
+      new Date()
+        .toISOString()
+        .slice(0,10);
+
+
+    /* -------------------------
+       只抓今天
+    ------------------------- */
+
+    const todayPhotos =
+      (d.beauticians || [])
+        .filter(
+          x =>
+            x.today &&
+            x.uploadDate === today &&
+            x.photo
+        );
+
+
+    const grid =
+      document
+        .getElementById(
+          "todayGrid"
+        );
+
+
+    if(!todayPhotos.length){
+
+      grid.innerHTML =
+        "<div class='box'>" +
+        "今日尚未公告報班。" +
+        "</div>";
+
+      return;
+    }
+
+
+    grid.innerHTML =
+      todayPhotos
+        .map(
+          x => `
+
+          <article class="card">
+
+            <div class="photo">
+
+              <img
+                src="${x.photo}"
+                alt="今日美容師照片"
+              >
+
+            </div>
+
+          </article>
+
+          `
+        )
+        .join("");
+
+
+  }catch(e){
+
+    document
+      .getElementById(
+        "todayGrid"
+      )
+      .innerHTML =
+      "<div class='box'>" +
+      "目前無法載入今日報班。" +
+      "</div>";
+
+    console.error(e);
+
+  }
+
+}
+
+
+load();
+
+</script>
+
+</body>
+</html>

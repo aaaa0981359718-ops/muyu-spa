@@ -6,9 +6,7 @@
 <title>莯浴 SPA｜管理後台</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -29,12 +27,10 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
 }
 
 .top h1{
-  font-size:23px;
-  margin:5px 0;
+  font-size:22px;
 }
 
 .top a{
@@ -50,13 +46,19 @@ body{
   margin:16px 0;
 }
 
-.panel h2{
-  margin-top:0;
+button{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  padding:13px;
+  background:#2b2724;
+  color:#fff;
+  font-weight:700;
+  font-size:16px;
 }
 
-input,
-button{
-  font:inherit;
+button:disabled{
+  opacity:.5;
 }
 
 input[type="password"],
@@ -67,107 +69,71 @@ input[type="text"]{
   border-radius:10px;
 }
 
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px 16px;
-  background:#2b2724;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.hidden{
-  display:none !important;
-}
-
 .muted{
   color:#7c736c;
   font-size:13px;
   line-height:1.6;
 }
 
+.hidden{
+  display:none!important;
+}
 
-/* 批次照片區 */
-
-.photo-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+/* 選照片 */
+.select-area{
+  border:2px dashed #cfc3ba;
+  border-radius:15px;
+  padding:22px 15px;
+  text-align:center;
+  background:#faf8f6;
   margin-top:15px;
 }
 
-.photo-card{
-  border:1px solid #e5ddd7;
-  border-radius:14px;
-  padding:12px;
-  background:#faf8f6;
-}
-
-.photo-number{
-  font-weight:700;
-  margin-bottom:9px;
-}
-
-.photo-input{
+.select-area input{
   width:100%;
-  padding:9px;
-  background:white;
-  border:1px solid #d8cec7;
-  border-radius:9px;
+  margin-top:12px;
 }
 
-.preview{
+.selected-count{
+  margin-top:12px;
+  font-weight:700;
+}
+
+.preview-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:15px;
+}
+
+.preview-item{
+  position:relative;
+}
+
+.preview-item img{
+  display:block;
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
   border-radius:12px;
-  margin-top:10px;
-  background:#eee8e3;
 }
 
-.empty-preview{
-  width:100%;
-  aspect-ratio:1/1;
-  border-radius:12px;
-  margin-top:10px;
-  background:#eee8e3;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#8b8179;
-  font-size:13px;
+.number{
+  position:absolute;
+  top:6px;
+  left:6px;
+  background:#2b2724;
+  color:#fff;
+  border-radius:20px;
+  padding:4px 8px;
+  font-size:12px;
 }
 
-.batch-actions{
-  margin-top:16px;
-}
-
-.status{
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#f5f0ec;
-  color:#625951;
-  font-size:13px;
-}
-
-
-/* 已有照片 */
-
+/* 現有照片 */
 .existing-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:10px;
-}
-
-.existing-item{
-  position:relative;
 }
 
 .existing-item img{
@@ -177,49 +143,42 @@ button:disabled{
   border-radius:12px;
 }
 
-.delete-btn{
-  width:100%;
-  margin-top:6px;
+.delete{
+  margin-top:5px;
   padding:8px;
+  font-size:13px;
   background:#8a3f35;
+}
+
+.status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  background:#f5f0ec;
   font-size:13px;
 }
 
-
 @media(max-width:650px){
 
-  .photo-grid{
-    grid-template-columns:1fr 1fr;
+  .preview-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
   .existing-grid{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .top h1{
-    font-size:20px;
-  }
-
 }
 </style>
 </head>
-
 
 <body>
 
 <div class="wrap">
 
-
-<!-- 頂部 -->
-
 <div class="top">
-
   <h1>莯浴 SPA｜管理後台</h1>
-
-  <a href="/">
-    ← 回網站
-  </a>
-
+  <a href="/">← 回網站</a>
 </div>
 
 
@@ -237,7 +196,7 @@ button:disabled{
 
   <button
     onclick="login()"
-    style="width:100%;margin-top:12px"
+    style="margin-top:12px"
   >
     登入
   </button>
@@ -266,8 +225,10 @@ button:disabled{
     value="12:00～04:00"
   >
 
-  <label class="muted"
-         style="display:block;margin-top:12px">
+  <label
+    class="muted"
+    style="display:block;margin-top:12px"
+  >
     電話
   </label>
 
@@ -276,8 +237,10 @@ button:disabled{
     type="text"
   >
 
-  <label class="muted"
-         style="display:block;margin-top:12px">
+  <label
+    class="muted"
+    style="display:block;margin-top:12px"
+  >
     LINE
   </label>
 
@@ -288,7 +251,7 @@ button:disabled{
 
   <button
     onclick="saveSettings()"
-    style="width:100%;margin-top:12px"
+    style="margin-top:12px"
   >
     儲存店家設定
   </button>
@@ -296,259 +259,60 @@ button:disabled{
 </div>
 
 
-<!-- 批次新增 -->
+<!-- 今日報班 -->
 
 <div class="panel">
 
-  <h2>📷 今日報班｜批次新增</h2>
+  <h2>📷 今日報班照片</h2>
 
   <div class="muted">
-    一次最多選擇 8 張美容師照片。
-    選完後按「一次上傳全部」。
+    不需要輸入編號、國籍、時間或介紹。
+    <br>
+    一次最多選擇 8 張照片。
   </div>
 
 
-  <div class="photo-grid">
+  <div class="select-area">
 
+    <strong>
+      一次選擇多張照片
+    </strong>
 
-    <!-- 1 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ①
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,1)"
-      >
-
-      <div id="empty1"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview1"
-        class="preview hidden"
-      >
-
+    <div class="muted">
+      點擊下面按鈕後，在手機相簿一次勾選多張。
     </div>
 
-
-    <!-- 2 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ②
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,2)"
-      >
-
-      <div id="empty2"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview2"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 3 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ③
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,3)"
-      >
-
-      <div id="empty3"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview3"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 4 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ④
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,4)"
-      >
-
-      <div id="empty4"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview4"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 5 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ⑤
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,5)"
-      >
-
-      <div id="empty5"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview5"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 6 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ⑥
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,6)"
-      >
-
-      <div id="empty6"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview6"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 7 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ⑦
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,7)"
-      >
-
-      <div id="empty7"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview7"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-    <!-- 8 -->
-
-    <div class="photo-card">
-
-      <div class="photo-number">
-        ⑧
-      </div>
-
-      <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="previewPhoto(this,8)"
-      >
-
-      <div id="empty8"
-           class="empty-preview">
-        尚未選擇照片
-      </div>
-
-      <img
-        id="preview8"
-        class="preview hidden"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <div class="batch-actions">
-
-    <button
-      id="uploadBtn"
-      onclick="uploadAll()"
-      style="width:100%"
+    <input
+      id="photos"
+      type="file"
+      accept="image/*"
+      multiple
+      onchange="selectPhotos(event)"
     >
-      📤 一次上傳全部
-    </button>
+
+    <div
+      id="count"
+      class="selected-count"
+    >
+      尚未選擇照片
+    </div>
 
   </div>
+
+
+  <div
+    id="preview"
+    class="preview-grid"
+  ></div>
+
+
+  <button
+    id="upload"
+    onclick="uploadPhotos()"
+    style="margin-top:15px"
+  >
+    📤 一次上傳全部照片
+  </button>
 
 
   <div
@@ -563,7 +327,7 @@ button:disabled{
 
 <div class="panel">
 
-  <h2>🖼️ 目前今日報班</h2>
+  <h2>🖼️ 目前照片</h2>
 
   <div
     id="list"
@@ -585,18 +349,16 @@ button:disabled{
 let token =
   localStorage.muyuToken || "";
 
-let db;
+let db = null;
 
-const $ =
-  selector =>
-    document.querySelector(selector);
+let selectedFiles = [];
 
 
 /* =========================
-   Authorization
+   API
 ========================= */
 
-function headers(){
+function authHeaders(){
 
   return {
     "Authorization":
@@ -613,7 +375,10 @@ function headers(){
 async function login(){
 
   const password =
-    $("#pw").value;
+    document
+      .getElementById("pw")
+      .value
+      .trim();
 
   if(!password){
 
@@ -622,9 +387,10 @@ async function login(){
     return;
   }
 
+
   try{
 
-    const response =
+    const r =
       await fetch(
         "/api/login",
         {
@@ -642,15 +408,21 @@ async function login(){
         }
       );
 
-    if(!response.ok){
 
-      alert("密碼錯誤");
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      alert(
+        data.error ||
+        "密碼錯誤"
+      );
 
       return;
     }
 
-    const data =
-      await response.json();
 
     token =
       data.token;
@@ -658,12 +430,14 @@ async function login(){
     localStorage.muyuToken =
       token;
 
+
     showApp();
 
-  }catch(error){
+
+  }catch(e){
 
     alert(
-      "無法連線到網站"
+      "無法連線到伺服器"
     );
 
   }
@@ -677,11 +451,13 @@ async function login(){
 
 function showApp(){
 
-  $("#login")
+  document
+    .getElementById("login")
     .classList
     .add("hidden");
 
-  $("#app")
+  document
+    .getElementById("app")
     .classList
     .remove("hidden");
 
@@ -698,41 +474,51 @@ async function load(){
 
   try{
 
-    const response =
+    const r =
       await fetch(
         "/api/site"
       );
 
-    if(!response.ok){
 
-      alert(
-        "網站資料讀取失敗"
+    if(!r.ok){
+
+      throw new Error(
+        "資料讀取失敗"
       );
 
-      return;
     }
 
+
     db =
-      await response.json();
+      await r.json();
 
 
-    $("#hours").value =
-      db.settings.businessHours ||
+    document
+      .getElementById("hours")
+      .value =
+      db.settings?.businessHours ||
       "12:00～04:00";
 
-    $("#phone").value =
-      db.settings.phone || "";
 
-    $("#line").value =
-      db.settings.line || "";
+    document
+      .getElementById("phone")
+      .value =
+      db.settings?.phone || "";
 
 
-    renderPhotos();
+    document
+      .getElementById("line")
+      .value =
+      db.settings?.line || "";
 
-  }catch(error){
+
+    renderExisting();
+
+
+  }catch(e){
 
     alert(
-      "資料載入失敗"
+      "資料讀取失敗"
     );
 
   }
@@ -741,103 +527,128 @@ async function load(){
 
 
 /* =========================
-   顯示照片
+   選擇照片
 ========================= */
 
-function renderPhotos(){
+function selectPhotos(event){
 
-  const list =
-    $("#list");
-
-  const photos =
-    db.beauticians
-      .filter(x => x.photo);
+  const files =
+    Array.from(
+      event.target.files || []
+    );
 
 
-  if(!photos.length){
+  if(files.length === 0){
 
-    list.innerHTML =
-      '<div class="muted">目前沒有照片</div>';
+    selectedFiles = [];
+
+    document
+      .getElementById("count")
+      .textContent =
+      "尚未選擇照片";
+
+    document
+      .getElementById("preview")
+      .innerHTML =
+      "";
 
     return;
   }
 
 
-  list.innerHTML =
-    photos.map(
-      (x,index) => `
+  if(files.length > 8){
 
-        <div class="existing-item">
+    alert(
+      "一次最多選擇 8 張照片"
+    );
 
-          <img
-            src="${x.photo}"
-            alt="美容師照片"
-          >
+    event.target.value = "";
 
-          <button
-            class="delete-btn"
-            onclick="deletePhoto('${x.id}')"
-          >
-            🗑 刪除
-          </button>
+    selectedFiles = [];
 
-        </div>
+    document
+      .getElementById("count")
+      .textContent =
+      "尚未選擇照片";
 
-      `
-    ).join("");
+    document
+      .getElementById("preview")
+      .innerHTML =
+      "";
 
-}
+    return;
+  }
 
 
-/* =========================
-   照片預覽
-========================= */
+  selectedFiles =
+    files;
 
-function previewPhoto(input,number){
 
-  const file =
-    input.files[0];
+  document
+    .getElementById("count")
+    .textContent =
+    `已選擇 ${files.length} 張照片`;
+
 
   const preview =
-    $("#preview" + number);
-
-  const empty =
-    $("#empty" + number);
+    document
+      .getElementById("preview");
 
 
-  if(!file){
-
-    preview
-      .classList
-      .add("hidden");
-
-    empty
-      .classList
-      .remove("hidden");
-
-    return;
-  }
+  preview.innerHTML =
+    "";
 
 
-  const url =
-    URL.createObjectURL(file);
+  files.forEach(
+    (file,index) => {
 
-  preview.src =
-    url;
+      const item =
+        document.createElement(
+          "div"
+        );
 
-  preview
-    .classList
-    .remove("hidden");
+      item.className =
+        "preview-item";
 
-  empty
-    .classList
-    .add("hidden");
+
+      const number =
+        document.createElement(
+          "div"
+        );
+
+      number.className =
+        "number";
+
+      number.textContent =
+        index + 1;
+
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+
+      img.src =
+        URL.createObjectURL(
+          file
+        );
+
+
+      item.appendChild(number);
+
+      item.appendChild(img);
+
+      preview.appendChild(item);
+
+    }
+  );
 
 }
 
 
 /* =========================
-   圖片壓縮
+   壓縮照片
 ========================= */
 
 function compressImage(file){
@@ -848,17 +659,19 @@ function compressImage(file){
       const reader =
         new FileReader();
 
+
       reader.onload =
-        event => {
+        function(e){
 
           const img =
             new Image();
 
-          img.onload =
-            () => {
 
-              const max =
-                1200;
+          img.onload =
+            function(){
+
+              const maxSize =
+                1000;
 
               let width =
                 img.width;
@@ -868,29 +681,29 @@ function compressImage(file){
 
 
               if(
-                width > max ||
-                height > max
+                width > maxSize ||
+                height > maxSize
               ){
 
-                if(width > height){
+                if(width >= height){
 
                   height =
                     height *
-                    max /
+                    maxSize /
                     width;
 
                   width =
-                    max;
+                    maxSize;
 
                 }else{
 
                   width =
                     width *
-                    max /
+                    maxSize /
                     height;
 
                   height =
-                    max;
+                    maxSize;
 
                 }
 
@@ -898,10 +711,10 @@ function compressImage(file){
 
 
               const canvas =
-                document
-                .createElement(
+                document.createElement(
                   "canvas"
                 );
+
 
               canvas.width =
                 Math.round(width);
@@ -911,8 +724,9 @@ function compressImage(file){
 
 
               const ctx =
-                canvas
-                .getContext("2d");
+                canvas.getContext(
+                  "2d"
+                );
 
 
               ctx.drawImage(
@@ -924,12 +738,14 @@ function compressImage(file){
               );
 
 
-              resolve(
+              const result =
                 canvas.toDataURL(
                   "image/jpeg",
-                  0.75
-                )
-              );
+                  0.65
+                );
+
+
+              resolve(result);
 
             };
 
@@ -938,7 +754,7 @@ function compressImage(file){
             reject;
 
           img.src =
-            event.target.result;
+            e.target.result;
 
         };
 
@@ -958,42 +774,12 @@ function compressImage(file){
    批次上傳
 ========================= */
 
-async function uploadAll(){
+async function uploadPhotos(){
 
-  const files = [];
-
-
-  for(
-    let i = 1;
-    i <= 8;
-    i++
-  ){
-
-    const input =
-      document
-      .querySelector(
-        `.photo-card:nth-child(${i}) .photo-input`
-      );
-
-    if(
-      input &&
-      input.files &&
-      input.files[0]
-    ){
-
-      files.push(
-        input.files[0]
-      );
-
-    }
-
-  }
-
-
-  if(!files.length){
+  if(!selectedFiles.length){
 
     alert(
-      "請先選擇至少一張照片"
+      "請先選擇照片"
     );
 
     return;
@@ -1001,107 +787,130 @@ async function uploadAll(){
 
 
   const button =
-    $("#uploadBtn");
+    document
+      .getElementById("upload");
+
 
   const status =
-    $("#status");
+    document
+      .getElementById("status");
 
 
   button.disabled =
     true;
 
-  button.textContent =
-    "⏳ 處理照片中...";
-
-  status
-    .classList
+  status.classList
     .remove("hidden");
 
 
   try{
 
+    const photos = [];
+
+
     for(
       let i = 0;
-      i < files.length;
+      i < selectedFiles.length;
       i++
     ){
 
       status.textContent =
-        `正在處理第 ${i+1} / ${files.length} 張照片...`;
+        `正在處理照片 ${i+1} / ${selectedFiles.length}...`;
 
 
       const photo =
         await compressImage(
-          files[i]
+          selectedFiles[i]
         );
 
 
-      const response =
-        await fetch(
-          "/api/beauticians",
-          {
-            method:"POST",
-
-            headers:{
-              ...headers(),
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-                name:
-                  "美容師",
-                today:true,
-                photo
-              })
-          }
-        );
-
-
-      if(!response.ok){
-
-        const data =
-          await response
-          .json()
-          .catch(
-            () => ({})
-          );
-
-        throw new Error(
-          data.error ||
-          "上傳失敗"
-        );
-
-      }
+      photos.push(photo);
 
     }
 
 
     status.textContent =
-      `完成！共處理 ${files.length} 張照片。`;
+      "正在一次儲存全部照片...";
+
+
+    const r =
+      await fetch(
+        "/api/beauticians/batch",
+        {
+          method:"POST",
+
+          headers:{
+            ...authHeaders(),
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              photos
+            })
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.error ||
+        "照片儲存失敗"
+      );
+
+    }
+
+
+    status.textContent =
+      `完成！已新增 ${photos.length} 張照片。`;
 
 
     alert(
-      `已完成 ${files.length} 張照片`
+      `成功新增 ${photos.length} 張照片`
     );
 
 
-    clearPhotoInputs();
+    document
+      .getElementById("photos")
+      .value =
+      "";
+
+    selectedFiles = [];
+
+
+    document
+      .getElementById("count")
+      .textContent =
+      "尚未選擇照片";
+
+
+    document
+      .getElementById("preview")
+      .innerHTML =
+      "";
+
 
     await load();
 
 
-  }catch(error){
+  }catch(e){
 
-    console.error(error);
+    console.error(e);
 
     status.textContent =
-      "上傳過程發生錯誤。";
+      "上傳失敗";
+
 
     alert(
-      "照片上傳失敗：" +
-      error.message
+      "上傳失敗：" +
+      e.message
     );
 
 
@@ -1110,52 +919,68 @@ async function uploadAll(){
     button.disabled =
       false;
 
-    button.textContent =
-      "📤 一次上傳全部";
-
   }
 
 }
 
 
 /* =========================
-   清除照片選擇
+   顯示現有照片
 ========================= */
 
-function clearPhotoInputs(){
+function renderExisting(){
 
-  document
-    .querySelectorAll(
-      ".photo-input"
-    )
-    .forEach(
-      input => {
-        input.value = "";
-      }
-    );
+  const list =
+    document
+      .getElementById("list");
 
 
-  for(
-    let i = 1;
-    i <= 8;
-    i++
-  ){
+  const photos =
+    (db.beauticians || [])
+      .filter(
+        x => x.photo
+      );
 
-    $("#preview" + i)
-      .classList
-      .add("hidden");
 
-    $("#empty" + i)
-      .classList
-      .remove("hidden");
+  if(!photos.length){
 
+    list.innerHTML =
+      '<div class="muted">目前沒有照片</div>';
+
+    return;
   }
+
+
+  list.innerHTML =
+    photos
+      .map(
+        x => `
+
+        <div class="existing-item">
+
+          <img
+            src="${x.photo}"
+            alt="美容師照片"
+          >
+
+          <button
+            class="delete"
+            onclick="deletePhoto('${x.id}')"
+          >
+            🗑 刪除
+          </button>
+
+        </div>
+
+        `
+      )
+      .join("");
 
 }
 
 
 /* =========================
-   刪除
+   刪除照片
 ========================= */
 
 async function deletePhoto(id){
@@ -1172,32 +997,40 @@ async function deletePhoto(id){
 
   try{
 
-    const response =
+    const r =
       await fetch(
         "/api/beauticians/" + id,
         {
           method:"DELETE",
-          headers:headers()
+
+          headers:
+            authHeaders()
         }
       );
 
 
-    if(!response.ok){
+    const data =
+      await r.json();
 
-      alert(
+
+    if(!r.ok){
+
+      throw new Error(
+        data.error ||
         "刪除失敗"
       );
 
-      return;
     }
 
 
     await load();
 
-  }catch(error){
+
+  }catch(e){
 
     alert(
-      "刪除失敗"
+      "刪除失敗：" +
+      e.message
     );
 
   }
@@ -1206,21 +1039,22 @@ async function deletePhoto(id){
 
 
 /* =========================
-   店家設定
+   儲存店家設定
 ========================= */
 
 async function saveSettings(){
 
   try{
 
-    const response =
+    const r =
       await fetch(
         "/api/settings",
         {
           method:"POST",
 
           headers:{
-            ...headers(),
+            ...authHeaders(),
+
             "Content-Type":
               "application/json"
           },
@@ -1229,26 +1063,36 @@ async function saveSettings(){
             JSON.stringify({
 
               businessHours:
-                $("#hours").value,
+                document
+                  .getElementById("hours")
+                  .value,
 
               phone:
-                $("#phone").value,
+                document
+                  .getElementById("phone")
+                  .value,
 
               line:
-                $("#line").value
+                document
+                  .getElementById("line")
+                  .value
 
             })
         }
       );
 
 
-    if(!response.ok){
+    const data =
+      await r.json();
 
-      alert(
+
+    if(!r.ok){
+
+      throw new Error(
+        data.error ||
         "儲存失敗"
       );
 
-      return;
     }
 
 
@@ -1256,10 +1100,12 @@ async function saveSettings(){
       "店家設定已儲存"
     );
 
-  }catch(error){
+
+  }catch(e){
 
     alert(
-      "儲存失敗"
+      "儲存失敗：" +
+      e.message
     );
 
   }

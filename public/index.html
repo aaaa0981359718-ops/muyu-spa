@@ -1,274 +1,357 @@
 <!doctype html>
 <html lang="zh-Hant">
-
 <head>
-
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
+<meta name="description" content="莯浴SPA會館｜台南優質養生會館｜今日報班與預約資訊｜營業時間 12:00～04:00">
+<meta name="robots" content="index,follow">
 
-<meta
-  name="description"
-  content="莯浴 SPA｜今日報班與預約資訊。營業時間 12:00～04:00。"
->
-
-<meta
-  name="robots"
-  content="index,follow"
->
-
-<title>莯浴 SPA｜今日報班</title>
-
+<title>莯浴SPA會館｜台南優質養生會館</title>
 
 <style>
+*{box-sizing:border-box}
 
-*{
-  box-sizing:border-box
-}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
-  background:#f7f4f1;
-  color:#24211f;
+  background:#f8f5f1;
+  color:#292522;
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Noto Sans TC",
-    "PingFang TC",
-    "Microsoft JhengHei",
-    sans-serif
+  -apple-system,
+  BlinkMacSystemFont,
+  "Noto Sans TC",
+  "PingFang TC",
+  "Microsoft JhengHei",
+  sans-serif;
 }
 
 a{
   text-decoration:none;
-  color:inherit
+  color:inherit;
 }
 
 .wrap{
   max-width:1100px;
   margin:auto;
-  padding:0 20px
+  padding:0 20px;
 }
+
+/* ===== 頂部導覽 ===== */
 
 header{
   position:sticky;
   top:0;
   z-index:10;
-  background:#f7f4f1ee;
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid #e8e0da
+  background:rgba(248,245,241,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #e8dfd7;
 }
 
 .nav{
   height:68px;
   display:flex;
   align-items:center;
-  justify-content:space-between
+  justify-content:space-between;
 }
 
 .logo{
-  font-size:22px;
+  font-size:21px;
   font-weight:800;
-  letter-spacing:3px
+  letter-spacing:3px;
+  color:#5b4335;
 }
 
 .navlinks{
   display:flex;
   gap:22px;
   font-size:14px;
-  color:#5f5853
+  color:#625a54;
 }
+
+.navlinks a:hover{
+  color:#9a6f4f;
+}
+
+/* ===== 首頁主視覺 ===== */
 
 .hero{
-  padding:70px 0 55px;
+  padding:76px 0 70px;
   background:
-    linear-gradient(
-      135deg,
-      #f4ebe4,
-      #fbfaf8 55%,
-      #eee4dc
-    )
+  radial-gradient(circle at 80% 20%,rgba(190,155,125,.18),transparent 35%),
+  linear-gradient(135deg,#f2e8df 0%,#fbfaf8 55%,#eee3da 100%);
+  border-bottom:1px solid #e8ded6;
 }
 
-h1{
-  font-size:clamp(42px,8vw,72px);
-  letter-spacing:5px;
-  margin:15px 0 10px
+.hero-inner{
+  text-align:center;
+  max-width:900px;
+  margin:auto;
 }
 
-.hero p{
-  line-height:1.9;
-  color:#665f59;
-  font-size:17px
-}
+/* 台南優質養生會館 */
 
-.pills{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap
-}
-
-.pill{
-  padding:9px 14px;
-  border:1px solid #d8c9bf;
-  border-radius:999px;
-  background:#fff8f4;
-  font-size:13px
-}
-
-.btn{
-  display:inline-block;
-  background:#2b2724;
-  color:white;
-  padding:13px 20px;
-  border-radius:999px;
+.hero-label{
+  font-size:18px;
   font-weight:700;
-  margin-top:18px
+  letter-spacing:4px;
+  color:#765845;
+  margin-bottom:16px;
 }
+
+/* 營業時間 */
+
+.hero-hours{
+  display:inline-block;
+  font-size:clamp(34px,7vw,58px);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:3px;
+  color:#9a704e;
+  margin:5px 0 20px;
+  text-shadow:0 2px 10px rgba(120,80,50,.10);
+}
+
+/* 莯浴SPA會館 */
+
+.hero-title{
+  margin:4px 0 17px;
+  font-size:clamp(46px,9vw,82px);
+  line-height:1.05;
+  letter-spacing:5px;
+  font-weight:900;
+
+  background:linear-gradient(
+    110deg,
+    #49362d 0%,
+    #8c6347 48%,
+    #b18a67 100%
+  );
+
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+
+  text-shadow:0 5px 18px rgba(80,50,35,.08);
+}
+
+.hero-slogan{
+  margin:0 0 10px;
+  font-size:19px;
+  font-weight:500;
+  letter-spacing:2px;
+  color:#514943;
+}
+
+.hero-desc{
+  margin:0 auto;
+  color:#766d66;
+  font-size:15px;
+  line-height:1.9;
+}
+
+.hero-btn{
+  display:inline-block;
+  margin-top:26px;
+  padding:13px 23px;
+  border-radius:999px;
+  background:#4b3830;
+  color:white;
+  font-weight:700;
+  box-shadow:0 8px 20px rgba(70,45,32,.15);
+}
+
+.hero-btn:hover{
+  background:#6b4d3b;
+}
+
+/* ===== 區塊 ===== */
 
 .section{
-  padding:55px 0
+  padding:58px 0;
 }
 
 .section h2{
   font-size:30px;
-  margin:0 0 7px
+  margin:0 0 7px;
+  color:#302925;
 }
 
 .sub{
-  color:#7d756f;
-  margin:0 0 25px
+  color:#817870;
+  margin:0 0 25px;
 }
+
+/* ===== 卡片 ===== */
 
 .grid{
   display:grid;
-  grid-template-columns:
-    repeat(3,1fr);
-  gap:18px
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
 .card{
   background:white;
-  border:1px solid #e8e0da;
+  border:1px solid #e8dfd7;
   border-radius:22px;
   overflow:hidden;
-  box-shadow:
-    0 8px 30px #37261c0d
+  box-shadow:0 8px 30px rgba(55,38,28,.06);
 }
 
 .photo{
   height:310px;
-  background:
-    linear-gradient(
-      135deg,
-      #e9ddd5,
-      #d6c1b5
-    );
+  background:linear-gradient(135deg,#eadfd7,#d8c7bc);
   display:grid;
   place-items:center;
-  color:#76685f
+  color:#776960;
 }
 
 .photo img{
   width:100%;
   height:100%;
-  object-fit:cover
+  object-fit:cover;
+  display:block;
 }
 
 .info{
-  padding:20px
+  padding:20px;
 }
 
 .tag{
   display:inline-block;
-  background:#f1e7e1;
-  color:#765444;
+  background:#f1e7e0;
+  color:#795744;
   border-radius:999px;
   padding:6px 10px;
-  font-size:12px
+  font-size:12px;
 }
 
 .name{
   font-size:22px;
   font-weight:800;
-  margin:9px 0
+  margin:9px 0;
 }
 
 .meta{
   color:#746b65;
   line-height:1.8;
-  font-size:14px
+  font-size:14px;
 }
 
 .time{
   margin-top:12px;
   font-weight:800;
-  color:#805b49
+  color:#805b49;
 }
 
-.box,
-.notice{
-  background:#fff;
-  border:1px solid #e8e0da;
+/* ===== 預約資訊 ===== */
+
+.box{
+  background:white;
+  border:1px solid #e8dfd7;
   border-radius:22px;
-  padding:27px
+  padding:27px;
 }
+
+.hours{
+  font-size:clamp(30px,6vw,48px);
+  font-weight:900;
+  letter-spacing:2px;
+  color:#956d4d;
+  margin-bottom:13px;
+}
+
+.contact-line{
+  font-size:16px;
+  line-height:2;
+  color:#625a54;
+}
+
+/* ===== 提醒 ===== */
 
 .notice{
   margin-top:24px;
-  background:#2b2724;
-  color:#fff
+  background:#40332c;
+  color:#fff;
+  border-radius:22px;
+  padding:27px;
 }
 
 .notice p{
   color:#ddd5d0;
-  line-height:1.7
+  line-height:1.7;
+  margin-bottom:0;
 }
 
-.contact-line{
-  margin-top:12px;
-  font-size:16px;
-  font-weight:700
-}
+/* ===== 頁尾 ===== */
 
 footer{
   padding:25px 0 70px;
   color:#8b817a;
   font-size:13px;
-  border-top:1px solid #e8e0da
+  border-top:1px solid #e8dfd7;
 }
 
+/* ===== 手機底部 ===== */
+
 .mobilebar{
-  display:none
+  display:none;
 }
 
 @media(max-width:720px){
 
   .nav{
-    height:60px
+    height:60px;
+  }
+
+  .logo{
+    font-size:18px;
+    letter-spacing:2px;
   }
 
   .navlinks{
-    display:none
+    display:none;
   }
 
   .hero{
-    padding:50px 0 42px
+    padding:55px 0 48px;
+  }
+
+  .hero-label{
+    font-size:15px;
+    letter-spacing:3px;
+  }
+
+  .hero-hours{
+    font-size:43px;
+    letter-spacing:1px;
+    margin-bottom:19px;
+  }
+
+  .hero-title{
+    font-size:48px;
+    letter-spacing:3px;
+  }
+
+  .hero-slogan{
+    font-size:17px;
+  }
+
+  .hero-desc{
+    font-size:14px;
   }
 
   .grid{
-    grid-template-columns:1fr
+    grid-template-columns:1fr;
   }
 
   .photo{
-    height:350px
+    height:350px;
   }
 
   .section{
-    padding:43px 0
+    padding:43px 0;
   }
 
   .mobilebar{
@@ -279,9 +362,9 @@ footer{
     left:0;
     right:0;
     padding:10px 14px;
-    background:#fff;
-    border-top:1px solid #e8e0da;
-    gap:10px
+    background:white;
+    border-top:1px solid #e8dfd7;
+    gap:10px;
   }
 
   .mobilebar a{
@@ -289,216 +372,140 @@ footer{
     text-align:center;
     padding:12px;
     border-radius:12px;
-    background:#2b2724;
-    color:#fff;
-    font-weight:700
+    background:#4b3830;
+    color:white;
+    font-weight:700;
   }
 
   .mobilebar a:first-child{
     background:#efe2da;
-    color:#654838
+    color:#654838;
   }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
+  <div class="wrap nav">
+    <div class="logo">莯浴SPA會館</div>
 
-<div class="wrap nav">
-
-<div class="logo">
-莯浴 SPA
-</div>
-
-<nav class="navlinks">
-
-<a href="#today">
-今日報班
-</a>
-
-<a href="#contact">
-預約
-</a>
-
-<a href="/admin.html">
-管理後台
-</a>
-
-</nav>
-
-</div>
-
+    <nav class="navlinks">
+      <a href="#today">今日報班</a>
+      <a href="#contact">預約資訊</a>
+      <a href="/admin.html">管理後台</a>
+    </nav>
+  </div>
 </header>
 
+<!-- ===== 首頁 ===== -->
 
 <section class="hero">
 
-<div class="wrap">
+  <div class="wrap hero-inner">
 
-<div class="pills">
+    <div class="hero-label">
+      台南優質養生會館
+    </div>
 
-<span class="pill">
-📋 今日報班
-</span>
+    <div class="hero-hours">
+      12：00～04：00
+    </div>
 
-<span class="pill">
-📱 手機版
-</span>
+    <h1 class="hero-title">
+      莯浴SPA會館
+    </h1>
 
-<span class="pill">
-⏰ 12:00～04:00
-</span>
+    <p class="hero-slogan">
+      放慢腳步，把時間留給自己
+    </p>
 
-</div>
+    <p class="hero-desc">
+      查看今日報班與預約資訊，提前預約你的放鬆時光
+    </p>
 
+    <a class="hero-btn" href="#today">
+      查看今日報班 ↓
+    </a>
 
-<h1>
-莯浴 SPA
-</h1>
-
-
-<p>
-放慢腳步，把時間留給自己。<br>
-查看今日報班與預約資訊，提前預約你的放鬆時光。
-</p>
-
-
-<a
-  class="btn"
-  href="#today"
->
-查看今日報班 ↓
-</a>
-
-</div>
+  </div>
 
 </section>
 
+<!-- ===== 今日報班 ===== -->
 
-<!-- 今日報班 -->
+<section class="section" id="today">
 
-<section
-  class="section"
-  id="today"
->
+  <div class="wrap">
 
-<div class="wrap">
+    <h2>📋 今日報班</h2>
 
-<h2>
-📋 今日報班
-</h2>
+    <p class="sub">
+      當日報班即時更新
+    </p>
 
-<p class="sub">
-每日更新
-</p>
+    <div id="todayGrid" class="grid"></div>
 
+    <div class="notice">
+      <b>✨ 今日報班即時更新</b>
 
-<div
-  id="todayGrid"
-  class="grid"
->
-載入中...
-</div>
+      <p>
+        實際報班時間依管理後台公告為準，
+        建議提前預約，避免向隅。
+      </p>
+    </div>
 
-
-<div class="notice">
-
-<b>
-✨ 每日報班即時更新
-</b>
-
-<p>
-每日實際報班依當日公告為準，建議提前預約。
-</p>
-
-</div>
-
-</div>
+  </div>
 
 </section>
 
+<!-- ===== 預約資訊 ===== -->
 
-<!-- 預約 -->
+<section class="section" id="contact">
 
-<section
-  class="section"
-  id="contact"
->
+  <div class="wrap">
 
-<div class="wrap">
+    <h2>⏰ 預約資訊</h2>
 
-<h2>
-⏰ 預約資訊
-</h2>
+    <p class="sub">
+      營業時間與聯絡方式
+    </p>
 
-<p class="sub">
-營業時間與聯絡方式
-</p>
+    <div class="box">
 
+      <div class="hours" id="hours">
+        12：00～04：00
+      </div>
 
-<div class="box">
+      <div class="contact-line">
+        📞 <span id="phone">—</span>
+      </div>
 
-<div
-  class="hours"
-  id="hours"
->
-12:00～04:00
-</div>
+      <div class="contact-line">
+        LINE：<span id="line">—</span>
+      </div>
 
+      <div class="meta">
+        每日實際報班依當日公告為準，建議提前預約。
+      </div>
 
-<div
-  class="contact-line"
-  id="phone"
->
-</div>
+    </div>
 
-
-<div
-  class="contact-line"
-  id="line"
->
-</div>
-
-
-<div class="meta">
-每日實際報班依當日公告為準，建議提前預約。
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </section>
-
 
 <footer>
-
-<div class="wrap">
-© 2026 莯浴 SPA · 今日報班與店家資訊
-</div>
-
+  <div class="wrap">
+    © 2026 莯浴SPA會館 · 台南優質養生會館
+  </div>
 </footer>
 
-
 <div class="mobilebar">
-
-<a href="#today">
-📋 今日報班
-</a>
-
-<a href="#contact">
-📞 預約資訊
-</a>
-
+  <a href="#today">📋 今日報班</a>
+  <a href="#contact">📞 預約資訊</a>
 </div>
-
 
 <script>
 
@@ -506,145 +513,95 @@ async function load(){
 
   try{
 
-    const r =
-      await fetch(
-        "/api/site"
-      );
+    const response = await fetch("/api/site");
+    const d = await response.json();
 
+    const settings = d.settings || {};
 
-    const d =
-      await r.json();
+    document.querySelector("#hours").textContent =
+      settings.businessHours || "12：00～04：00";
 
+    document.querySelector("#phone").textContent =
+      settings.phone || "—";
 
-    if(!r.ok){
+    document.querySelector("#line").textContent =
+      settings.line || "—";
 
-      throw new Error(
-        d.error ||
-        "資料讀取失敗"
-      );
+    const beauticians = Array.isArray(d.beauticians)
+      ? d.beauticians
+      : [];
 
-    }
+    const render = x => `
 
+      <article class="card">
 
-    /* -------------------------
-       店家設定
-    ------------------------- */
+        <div class="photo">
 
-    document
-      .getElementById("hours")
-      .textContent =
-      d.settings?.businessHours ||
-      "12:00～04:00";
+          ${
+            x.photo
+            ? `<img src="${x.photo}" alt="莯浴SPA美容師照片">`
+            : "美容師照片"
+          }
 
+        </div>
 
-    const phone =
-      d.settings?.phone ||
-      "";
+        <div class="info">
 
+          <span class="tag">
+            今日上班
+          </span>
 
-    const line =
-      d.settings?.line ||
-      "";
+          <div class="name">
+            ${x.no ? x.no + "號｜" : ""}
+            ${x.name || "美容師"}
+          </div>
 
+          ${
+            x.nationality || x.intro
+            ? `<div class="meta">
+                ${x.nationality || ""}
+                ${x.nationality && x.intro ? "<br>" : ""}
+                ${x.intro || ""}
+              </div>`
+            : ""
+          }
 
-    document
-      .getElementById("phone")
-      .textContent =
-      phone
-        ? "📞 " + phone
-        : "";
+          ${
+            x.time
+            ? `<div class="time">
+                ⏰ ${x.time}
+              </div>`
+            : ""
+          }
 
+        </div>
 
-    document
-      .getElementById("line")
-      .textContent =
-      line
-        ? "💬 LINE：" + line
-        : "";
+      </article>
 
-
-    /* -------------------------
-       今天日期
-    ------------------------- */
+    `;
 
     const today =
-      new Date()
-        .toISOString()
-        .slice(0,10);
+      beauticians.filter(x => x.today && x.photo);
 
+    document.querySelector("#todayGrid").innerHTML =
+      today.length
+      ? today.map(render).join("")
+      : `<div class="box">
+          今日尚未公告報班。
+        </div>`;
 
-    /* -------------------------
-       只抓今天
-    ------------------------- */
+  }catch(error){
 
-    const todayPhotos =
-      (d.beauticians || [])
-        .filter(
-          x =>
-            x.today &&
-            x.uploadDate === today &&
-            x.photo
-        );
+    console.error(error);
 
-
-    const grid =
-      document
-        .getElementById(
-          "todayGrid"
-        );
-
-
-    if(!todayPhotos.length){
-
-      grid.innerHTML =
-        "<div class='box'>" +
-        "今日尚未公告報班。" +
-        "</div>";
-
-      return;
-    }
-
-
-    grid.innerHTML =
-      todayPhotos
-        .map(
-          x => `
-
-          <article class="card">
-
-            <div class="photo">
-
-              <img
-                src="${x.photo}"
-                alt="今日美容師照片"
-              >
-
-            </div>
-
-          </article>
-
-          `
-        )
-        .join("");
-
-
-  }catch(e){
-
-    document
-      .getElementById(
-        "todayGrid"
-      )
-      .innerHTML =
-      "<div class='box'>" +
-      "目前無法載入今日報班。" +
-      "</div>";
-
-    console.error(e);
+    document.querySelector("#todayGrid").innerHTML =
+      `<div class="box">
+        資料讀取失敗，請稍後再試。
+      </div>`;
 
   }
 
 }
-
 
 load();
 

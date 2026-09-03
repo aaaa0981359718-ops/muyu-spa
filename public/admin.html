@@ -3,156 +3,252 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>莯浴 SPA｜管理後台</title>
+
+<title>莯浴SPA會館｜管理後台</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  background:#f6f2ef;
-  color:#282421;
-  font-family:-apple-system,BlinkMacSystemFont,
-  "Noto Sans TC","PingFang TC",
-  "Microsoft JhengHei",sans-serif;
+  background:#f7f4f1;
+  color:#292522;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans TC",
+    "PingFang TC",
+    "Microsoft JhengHei",
+    sans-serif;
 }
 
 .wrap{
-  max-width:900px;
+  max-width:1000px;
   margin:auto;
-  padding:20px 14px 50px;
+  padding:20px;
 }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
+header{
+  background:#40332c;
+  color:white;
+  padding:22px 0;
 }
 
-.top h1{font-size:22px}
-
-.top a{
-  color:#6f665f;
-  text-decoration:none;
+h1{
+  margin:0;
+  font-size:25px;
+  letter-spacing:2px;
 }
 
-.panel{
-  background:#fff;
-  border:1px solid #e5ddd7;
-  border-radius:18px;
-  padding:18px;
-  margin:16px 0;
+h2{
+  margin:0 0 8px;
+  font-size:24px;
 }
 
-input[type="password"],
-input[type="text"]{
+.sub{
+  color:#817870;
+  margin:0 0 20px;
+}
+
+section{
+  margin-top:22px;
+}
+
+.box{
+  background:white;
+  border:1px solid #e6ddd6;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 8px 25px rgba(50,35,25,.05);
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:700;
+}
+
+input{
   width:100%;
-  padding:12px;
-  border:1px solid #d8cec7;
-  border-radius:10px;
+  padding:13px 14px;
+  border:1px solid #dcd2ca;
+  border-radius:12px;
+  font-size:16px;
+  margin-bottom:15px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#a27a5a;
 }
 
 button{
-  width:100%;
   border:0;
-  border-radius:11px;
-  padding:13px;
-  background:#2b2724;
-  color:#fff;
+  border-radius:12px;
+  padding:12px 17px;
+  font-size:15px;
   font-weight:700;
-  font-size:16px;
+  cursor:pointer;
+  background:#4a3830;
+  color:white;
 }
 
-button:disabled{opacity:.5}
-
-.hidden{display:none!important}
-
-.muted{
-  color:#7c736c;
-  font-size:13px;
-  line-height:1.6;
+button.secondary{
+  background:#efe3db;
+  color:#60483a;
 }
 
-.select-area{
-  border:2px dashed #cfc3ba;
-  border-radius:15px;
-  padding:22px 15px;
+button.danger{
+  background:#9a4e43;
+  color:white;
+}
+
+button:disabled{
+  opacity:.5;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+#loginBox{
+  max-width:450px;
+  margin:50px auto;
+}
+
+#adminArea{
+  display:none;
+}
+
+.uploadArea{
+  border:2px dashed #d5c7bd;
+  border-radius:18px;
+  padding:24px;
   text-align:center;
-  background:#faf8f6;
-  margin-top:15px;
+  background:#fcfaf8;
 }
 
-.select-area input{
+.uploadArea p{
+  color:#817870;
+  line-height:1.7;
+}
+
+input[type=file]{
+  border:0;
+  padding:0;
+  margin:10px 0 0;
+}
+
+.preview{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.previewItem{
+  position:relative;
+  aspect-ratio:1/1;
+  border-radius:14px;
+  overflow:hidden;
+  background:#eee5de;
+}
+
+.previewItem img{
   width:100%;
-  margin-top:12px;
+  height:100%;
+  object-fit:cover;
 }
 
 .count{
-  margin-top:12px;
+  margin-top:14px;
   font-weight:700;
+  color:#765744;
 }
 
-.preview-grid,
-.existing-grid{
+.photoGrid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:15px;
+  gap:15px;
 }
 
-.preview-item{
-  position:relative;
+.photoCard{
+  background:white;
+  border:1px solid #e5dcd5;
+  border-radius:17px;
+  overflow:hidden;
 }
 
-.preview-item img,
-.existing-item img{
-  display:block;
+.photoCard img{
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
-  border-radius:12px;
+  display:block;
 }
 
-.number{
-  position:absolute;
-  top:6px;
-  left:6px;
-  background:#2b2724;
-  color:#fff;
-  border-radius:20px;
-  padding:4px 8px;
-  font-size:12px;
+.photoInfo{
+  padding:12px;
+}
+
+.photoName{
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.empty{
+  padding:25px;
+  border-radius:15px;
+  background:#faf8f6;
+  color:#827970;
+  text-align:center;
+}
+
+.notice{
+  margin-top:15px;
+  background:#40332c;
+  color:white;
+  border-radius:16px;
+  padding:18px;
+  line-height:1.7;
+}
+
+.notice span{
+  color:#ddd3cc;
 }
 
 .status{
   margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#f5f0ec;
-  font-size:13px;
+  font-weight:700;
 }
 
-.danger{
-  background:#8a3f35;
-  margin-top:10px;
-}
+@media(max-width:720px){
 
-.existing-item{
-  min-width:0;
-}
+  .wrap{
+    padding:15px;
+  }
 
-.delete{
-  margin-top:5px;
-  padding:8px;
-  font-size:13px;
-  background:#8a3f35;
-}
+  h1{
+    font-size:21px;
+  }
 
-@media(max-width:650px){
-  .preview-grid,
-  .existing-grid{
+  .preview{
     grid-template-columns:repeat(2,1fr);
+  }
+
+  .photoGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  button{
+    width:100%;
+  }
+
+  .actions{
+    flex-direction:column;
   }
 }
 </style>
@@ -160,155 +256,219 @@ button:disabled{opacity:.5}
 
 <body>
 
-<div class="wrap">
+<header>
+  <div class="wrap">
+    <h1>莯浴SPA會館｜管理後台</h1>
+  </div>
+</header>
 
-<div class="top">
-  <h1>莯浴 SPA｜管理後台</h1>
-  <a href="/">← 回網站</a>
-</div>
 
+<!-- =========================
+     登入
+========================= -->
 
-<!-- 登入 -->
-
-<div id="login" class="panel">
+<div id="loginBox" class="box">
 
   <h2>管理員登入</h2>
 
+  <p class="sub">
+    請輸入管理密碼
+  </p>
+
   <input
-    id="pw"
+    id="password"
     type="password"
-    placeholder="管理員密碼"
+    placeholder="管理密碼"
   >
 
-  <button
-    onclick="login()"
-    style="margin-top:12px"
-  >
+  <button onclick="login()">
     登入
   </button>
 
-</div>
-
-
-<div id="app" class="hidden">
-
-
-<!-- 店家設定 -->
-
-<div class="panel">
-
-  <h2>店家設定</h2>
-
-  <div class="muted">營業時間</div>
-
-  <input id="hours" type="text">
-
-  <div class="muted" style="margin-top:12px">
-    電話
-  </div>
-
-  <input id="phone" type="text">
-
-  <div class="muted" style="margin-top:12px">
-    LINE
-  </div>
-
-  <input id="line" type="text">
-
-  <button
-    onclick="saveSettings()"
-    style="margin-top:12px"
-  >
-    儲存店家設定
-  </button>
+  <div id="loginStatus" class="status"></div>
 
 </div>
 
 
-<!-- 今日報班 -->
+<!-- =========================
+     管理區
+========================= -->
 
-<div class="panel">
+<div id="adminArea">
 
-  <h2>📷 今日報班</h2>
-
-  <div class="muted">
-    一次最多選擇 8 張美容師照片。
-    <br>
-    不需要輸入編號、國籍、時間或介紹。
-  </div>
+<div class="wrap">
 
 
-  <div class="select-area">
+<!-- =========================
+     店家資訊
+========================= -->
 
-    <strong>一次選擇多張照片</strong>
+<section>
 
-    <div class="muted">
-      點擊選擇檔案後，可以從手機相簿一次勾選多張。
-    </div>
+  <h2>🏠 店家資訊</h2>
+
+  <p class="sub">
+    這些資料會顯示在網站的預約資訊。
+  </p>
+
+  <div class="box">
+
+    <label>營業時間</label>
 
     <input
-      id="photos"
-      type="file"
-      accept="image/*"
-      multiple
-      onchange="selectPhotos(event)"
+      id="businessHours"
+      value="12：00～04：00"
     >
 
-    <div
-      id="count"
-      class="count"
+    <label>電話</label>
+
+    <input
+      id="phone"
+      placeholder="例如：06-3130026"
     >
-      尚未選擇照片
+
+    <label>LINE</label>
+
+    <input
+      id="line"
+      placeholder="例如：LINE ID"
+    >
+
+    <button onclick="saveSettings()">
+      儲存店家資訊
+    </button>
+
+    <div id="settingsStatus" class="status"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     今日報班
+========================= -->
+
+<section>
+
+  <h2>📋 今日報班</h2>
+
+  <p class="sub">
+    這裡顯示目前網站正在使用的報班照片。
+  </p>
+
+  <div class="box">
+
+    <div id="todayGrid" class="photoGrid"></div>
+
+    <div class="notice">
+      <b>🗑️ 一鍵清除目前報班</b><br>
+      <span>
+        按下後會直接刪除目前所有報班照片。
+        00:00 不會自動清除，凌晨 04:00 才會自動清除。
+      </span>
+    </div>
+
+    <div style="margin-top:15px">
+
+      <button
+        class="danger"
+        onclick="clearToday()"
+      >
+        🗑️ 一鍵清除目前報班
+      </button>
+
+    </div>
+
+    <div id="clearStatus" class="status"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     上傳照片
+========================= -->
+
+<section>
+
+  <h2>📸 上傳今日報班照片</h2>
+
+  <p class="sub">
+    一次最多選擇 8 張照片，按一次即可全部上傳。
+  </p>
+
+  <div class="box">
+
+    <div class="uploadArea">
+
+      <b>
+        選擇美容師照片
+      </b>
+
+      <p>
+        可以一次從手機相簿選擇多張照片。
+      </p>
+
+      <input
+        id="photoInput"
+        type="file"
+        accept="image/*"
+        multiple
+        onchange="previewPhotos()"
+      >
+
+      <div id="preview" class="preview"></div>
+
+      <div
+        id="photoCount"
+        class="count"
+      ></div>
+
+      <div style="margin-top:18px">
+
+        <button
+          id="uploadBtn"
+          onclick="uploadPhotos()"
+          disabled
+        >
+          📤 上傳全部照片
+        </button>
+
+      </div>
+
+      <div
+        id="uploadStatus"
+        class="status"
+      ></div>
+
     </div>
 
   </div>
 
-
-  <div
-    id="preview"
-    class="preview-grid"
-  ></div>
+</section>
 
 
-  <button
-    id="upload"
-    onclick="uploadPhotos()"
-    style="margin-top:15px"
-  >
-    📤 一次上傳全部照片
-  </button>
+<!-- =========================
+     目前照片
+========================= -->
 
+<section>
 
-  <div
-    id="status"
-    class="status hidden"
-  ></div>
+  <h2>📷 目前報班照片</h2>
 
+  <p class="sub">
+    這裡就是目前網站「今日報班」所顯示的照片。
+  </p>
 
-  <button
-    class="danger"
-    onclick="clearToday()"
-  >
-    🗑️ 一鍵清除今日報班
-  </button>
+  <div class="box">
 
-</div>
+    <div id="allGrid" class="photoGrid"></div>
 
-
-<!-- 今日照片 -->
-
-<div class="panel">
-
-  <h2>🖼️ 今日照片</h2>
-
-  <div
-    id="list"
-    class="existing-grid"
-  >
-    載入中...
   </div>
 
-</div>
+</section>
 
 
 </div>
@@ -317,152 +477,143 @@ button:disabled{opacity:.5}
 
 <script>
 
-let token =
-  localStorage.muyuToken || "";
-
-let db = null;
+let token = "";
 
 let selectedFiles = [];
 
 
-/* -------------------------
-登入
-------------------------- */
+/* =========================
+   登入
+========================= */
 
 async function login(){
 
   const password =
-    document
-      .getElementById("pw")
-      .value
-      .trim();
+    document.querySelector("#password").value;
+
+  const status =
+    document.querySelector("#loginStatus");
 
   if(!password){
-    alert("請輸入管理員密碼");
+
+    status.textContent =
+      "請輸入管理密碼";
+
     return;
   }
 
+  status.textContent =
+    "登入中...";
+
   try{
 
-    const r =
-      await fetch("/api/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-        body:
-          JSON.stringify({password})
-      });
+    const response =
+      await fetch(
+        "/api/login",
+        {
+          method:"POST",
+          headers:{
+            "content-type":
+              "application/json"
+          },
+          body:JSON.stringify({
+            password
+          })
+        }
+      );
 
     const data =
-      await r.json();
+      await response.json();
 
-    if(!r.ok){
-      alert(data.error || "密碼錯誤");
+    if(!data.ok){
+
+      status.textContent =
+        data.message || "登入失敗";
+
       return;
     }
 
-    token = data.token;
+    token =
+      data.token;
 
-    localStorage.muyuToken =
-      token;
+    document.querySelector("#loginBox")
+      .style.display="none";
 
-    showApp();
+    document.querySelector("#adminArea")
+      .style.display="block";
 
-  }catch(e){
+    load();
 
-    alert("無法連線到伺服器");
+  }catch(error){
+
+    status.textContent =
+      "登入失敗，請稍後再試。";
 
   }
-}
-
-
-/* -------------------------
-顯示後台
-------------------------- */
-
-function showApp(){
-
-  document
-    .getElementById("login")
-    .classList
-    .add("hidden");
-
-  document
-    .getElementById("app")
-    .classList
-    .remove("hidden");
-
-  load();
 
 }
 
 
-/* -------------------------
-驗證
-------------------------- */
+/* =========================
+   API Headers
+========================= */
 
 function authHeaders(){
 
   return {
     "Authorization":
-      "Bearer " + token
+      `Bearer ${token}`,
+    "content-type":
+      "application/json"
   };
 
 }
 
 
-/* -------------------------
-讀取資料
-------------------------- */
+/* =========================
+   載入資料
+========================= */
 
 async function load(){
 
   try{
 
-    const r =
-      await fetch("/api/site");
-
-    const data =
-      await r.json();
-
-    if(!r.ok){
-      throw new Error(
-        data.error ||
-        "資料讀取失敗"
+    const response =
+      await fetch(
+        "/api/site"
       );
-    }
 
-    db = data;
+    const db =
+      await response.json();
 
+    const settings =
+      db.settings || {};
 
-    document
-      .getElementById("hours")
-      .value =
-      db.settings?.businessHours ||
-      "12:00～04:00";
+    document.querySelector(
+      "#businessHours"
+    ).value =
+      settings.businessHours ||
+      "12：00～04：00";
 
+    document.querySelector(
+      "#phone"
+    ).value =
+      settings.phone || "";
 
-    document
-      .getElementById("phone")
-      .value =
-      db.settings?.phone || "";
+    document.querySelector(
+      "#line"
+    ).value =
+      settings.line || "";
 
+    renderPhotos(
+      db.beauticians || []
+    );
 
-    document
-      .getElementById("line")
-      .value =
-      db.settings?.line || "";
-
-
-    renderToday();
-
-  }catch(e){
+  }catch(error){
 
     alert(
       "資料讀取失敗：" +
-      e.message
+      error.message
     );
 
   }
@@ -470,153 +621,206 @@ async function load(){
 }
 
 
-/* -------------------------
-選照片
-------------------------- */
+/* =========================
+   顯示照片
+========================= */
 
-function selectPhotos(event){
+function renderPhotos(items){
 
-  const files =
-    Array.from(
-      event.target.files || []
+  const todayGrid =
+    document.querySelector(
+      "#todayGrid"
+    );
+
+  const allGrid =
+    document.querySelector(
+      "#allGrid"
     );
 
 
-  if(files.length > 8){
+  if(!items.length){
 
-    alert(
-      "一次最多選擇 8 張照片"
-    );
+    const empty =
+      `<div class="empty">
+        目前沒有報班照片。
+      </div>`;
 
-    event.target.value = "";
+    todayGrid.innerHTML =
+      empty;
 
-    selectedFiles = [];
-
-    document
-      .getElementById("count")
-      .textContent =
-      "尚未選擇照片";
-
-    document
-      .getElementById("preview")
-      .innerHTML =
-      "";
+    allGrid.innerHTML =
+      empty;
 
     return;
   }
 
 
-  selectedFiles =
-    files;
+  const html =
+    items.map((item,index)=>`
+
+      <div class="photoCard">
+
+        <img
+          src="${item.photo}"
+          alt="報班照片"
+        >
+
+        <div class="photoInfo">
+
+          <div class="photoName">
+            ${item.name || `美容師${index+1}`}
+          </div>
+
+          <button
+            class="danger"
+            onclick="deletePhoto('${item.id}')"
+          >
+            🗑️ 刪除這張
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
 
 
-  document
-    .getElementById("count")
-    .textContent =
-    files.length
-      ? `已選擇 ${files.length} 張照片`
-      : "尚未選擇照片";
+  todayGrid.innerHTML =
+    html;
 
-
-  const preview =
-    document
-      .getElementById("preview");
-
-  preview.innerHTML = "";
-
-
-  files.forEach(
-    (file,index)=>{
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "preview-item";
-
-
-      const number =
-        document.createElement(
-          "div"
-        );
-
-      number.className =
-        "number";
-
-      number.textContent =
-        index + 1;
-
-
-      const img =
-        document.createElement(
-          "img"
-        );
-
-      img.src =
-        URL.createObjectURL(
-          file
-        );
-
-
-      item.appendChild(number);
-      item.appendChild(img);
-
-      preview.appendChild(item);
-
-    }
-  );
+  allGrid.innerHTML =
+    html;
 
 }
 
 
-/* -------------------------
-壓縮
-------------------------- */
+/* =========================
+   選擇照片預覽
+========================= */
+
+function previewPhotos(){
+
+  const input =
+    document.querySelector(
+      "#photoInput"
+    );
+
+  const preview =
+    document.querySelector(
+      "#preview"
+    );
+
+  const count =
+    document.querySelector(
+      "#photoCount"
+    );
+
+  const uploadBtn =
+    document.querySelector(
+      "#uploadBtn"
+    );
+
+
+  selectedFiles =
+    Array.from(
+      input.files
+    );
+
+
+  if(selectedFiles.length > 8){
+
+    alert(
+      "一次最多只能選擇 8 張照片。"
+    );
+
+    selectedFiles =
+      selectedFiles.slice(0,8);
+
+  }
+
+
+  preview.innerHTML = "";
+
+
+  selectedFiles.forEach(file=>{
+
+    const url =
+      URL.createObjectURL(file);
+
+    preview.innerHTML += `
+      <div class="previewItem">
+        <img src="${url}">
+      </div>
+    `;
+
+  });
+
+
+  count.textContent =
+    selectedFiles.length
+    ? `已選擇 ${selectedFiles.length} 張照片`
+    : "";
+
+
+  uploadBtn.disabled =
+    selectedFiles.length === 0;
+
+}
+
+
+/* =========================
+   壓縮照片
+========================= */
 
 function compressImage(file){
 
   return new Promise(
-    (resolve,reject)=>{
+    resolve => {
+
+      const img =
+        new Image();
 
       const reader =
         new FileReader();
 
-
       reader.onload =
-        e=>{
-
-          const img =
-            new Image();
-
+        e => {
 
           img.onload =
-            ()=>{
+            () => {
 
-              const max = 1000;
+              const max =
+                1000;
 
-              let w = img.width;
-              let h = img.height;
+              let width =
+                img.width;
+
+              let height =
+                img.height;
 
 
-              if(w > max || h > max){
+              if(width > max){
 
-                if(w >= h){
+                height =
+                  height *
+                  max /
+                  width;
 
-                  h =
-                    h * max / w;
+                width =
+                  max;
 
-                  w = max;
+              }
 
-                }else{
 
-                  w =
-                    w * max / h;
+              if(height > max){
 
-                  h = max;
+                width =
+                  width *
+                  max /
+                  height;
 
-                }
+                height =
+                  max;
 
               }
 
@@ -627,17 +831,16 @@ function compressImage(file){
                 );
 
               canvas.width =
-                Math.round(w);
+                Math.round(width);
 
               canvas.height =
-                Math.round(h);
+                Math.round(height);
 
 
               const ctx =
                 canvas.getContext(
                   "2d"
                 );
-
 
               ctx.drawImage(
                 img,
@@ -658,17 +861,11 @@ function compressImage(file){
             };
 
 
-          img.onerror =
-            reject;
-
           img.src =
             e.target.result;
 
         };
 
-
-      reader.onerror =
-        reject;
 
       reader.readAsDataURL(file);
 
@@ -678,33 +875,34 @@ function compressImage(file){
 }
 
 
-/* -------------------------
-批次上傳
-------------------------- */
+/* =========================
+   批次上傳
+========================= */
 
 async function uploadPhotos(){
 
   if(!selectedFiles.length){
 
-    alert("請先選擇照片");
-
     return;
   }
 
 
-  const button =
-    document
-      .getElementById("upload");
+  const btn =
+    document.querySelector(
+      "#uploadBtn"
+    );
 
   const status =
-    document
-      .getElementById("status");
+    document.querySelector(
+      "#uploadStatus"
+    );
 
 
-  button.disabled = true;
+  btn.disabled =
+    true;
 
-  status.classList
-    .remove("hidden");
+  status.textContent =
+    "照片處理中，請稍候...";
 
 
   try{
@@ -713,248 +911,117 @@ async function uploadPhotos(){
 
 
     for(
-      let i=0;
-      i<selectedFiles.length;
-      i++
+      const file of selectedFiles
     ){
 
-      status.textContent =
-        `正在處理第 ${i+1} / ${selectedFiles.length} 張照片...`;
-
+      const compressed =
+        await compressImage(file);
 
       photos.push(
-        await compressImage(
-          selectedFiles[i]
-        )
+        compressed
       );
 
     }
 
 
     status.textContent =
-      "正在儲存照片...";
+      "正在上傳照片...";
 
 
-    const r =
+    const response =
       await fetch(
         "/api/beauticians/batch",
         {
           method:"POST",
-
-          headers:{
-            ...authHeaders(),
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-              photos
-            })
+          headers:authHeaders(),
+          body:JSON.stringify({
+            photos
+          })
         }
       );
 
 
     const data =
-      await r.json();
+      await response.json();
 
 
-    if(!r.ok){
+    if(!data.ok){
 
       throw new Error(
-        data.error ||
-        "照片儲存失敗"
+        data.message ||
+        "上傳失敗"
       );
 
     }
 
 
     status.textContent =
-      `成功！已新增 ${data.count || photos.length} 張照片。`;
+      `成功上傳 ${data.added} 張照片。`;
 
 
-    alert(
-      `成功！已新增 ${data.count || photos.length} 張照片。`
-    );
+    selectedFiles =
+      [];
 
+    document.querySelector(
+      "#photoInput"
+    ).value = "";
 
-    selectedFiles = [];
+    document.querySelector(
+      "#preview"
+    ).innerHTML = "";
 
-    document
-      .getElementById("photos")
-      .value = "";
-
-    document
-      .getElementById("count")
-      .textContent =
-      "尚未選擇照片";
-
-    document
-      .getElementById("preview")
-      .innerHTML =
-      "";
-
+    document.querySelector(
+      "#photoCount"
+    ).textContent = "";
 
     await load();
 
 
-  }catch(e){
+  }catch(error){
 
     status.textContent =
-      "上傳失敗";
-
-    alert(
       "上傳失敗：" +
-      e.message
-    );
-
-  }finally{
-
-    button.disabled =
-      false;
+      error.message;
 
   }
+
+
+  btn.disabled =
+    selectedFiles.length === 0;
 
 }
 
 
-/* -------------------------
-顯示今日照片
-------------------------- */
-
-function renderToday(){
-
-  const list =
-    document
-      .getElementById("list");
-
-
-  const today =
-    new Date()
-      .toISOString()
-      .slice(0,10);
-
-
-  const photos =
-    (db.beauticians || [])
-      .filter(
-        x =>
-          x.today &&
-          x.uploadDate === today &&
-          x.photo
-      );
-
-
-  if(!photos.length){
-
-    list.innerHTML =
-      '<div class="muted">今天尚未上傳報班照片。</div>';
-
-    return;
-  }
-
-
-  list.innerHTML =
-    photos
-      .map(
-        x => `
-
-        <div class="existing-item">
-
-          <img
-            src="${x.photo}"
-            alt="今日報班照片"
-          >
-
-          <button
-            class="delete"
-            onclick="deletePhoto('${x.id}')"
-          >
-            🗑 刪除
-          </button>
-
-        </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-/* -------------------------
-刪除單張
-------------------------- */
-
-async function deletePhoto(id){
-
-  if(
-    !confirm(
-      "確定要刪除這張照片嗎？"
-    )
-  ){
-    return;
-  }
-
-
-  try{
-
-    const r =
-      await fetch(
-        "/api/beauticians/" + id,
-        {
-          method:"DELETE",
-          headers:authHeaders()
-        }
-      );
-
-
-    const data =
-      await r.json();
-
-
-    if(!r.ok){
-
-      throw new Error(
-        data.error ||
-        "刪除失敗"
-      );
-
-    }
-
-
-    await load();
-
-  }catch(e){
-
-    alert(
-      "刪除失敗：" +
-      e.message
-    );
-
-  }
-
-}
-
-
-/* -------------------------
-一鍵清除今日
-------------------------- */
+/* =========================
+   一鍵清除
+========================= */
 
 async function clearToday(){
 
-  if(
-    !confirm(
-      "確定要清除今天全部報班照片嗎？\n\n刪除後無法復原。"
-    )
-  ){
+  const ok =
+    confirm(
+      "確定要刪除目前所有報班照片嗎？\n\n這個動作無法復原。"
+    );
+
+  if(!ok){
+
     return;
   }
 
 
+  const status =
+    document.querySelector(
+      "#clearStatus"
+    );
+
+
+  status.textContent =
+    "清除中...";
+
+
   try{
 
-    const r =
+    const response =
       await fetch(
         "/api/beauticians/today",
         {
@@ -965,32 +1032,88 @@ async function clearToday(){
 
 
     const data =
-      await r.json();
+      await response.json();
 
 
-    if(!r.ok){
+    if(!data.ok){
 
       throw new Error(
-        data.error ||
+        data.message ||
         "清除失敗"
       );
 
     }
 
 
-    alert(
-      `已清除 ${data.count || 0} 張今日報班照片。`
-    );
+    status.textContent =
+      `已清除 ${data.removed || 0} 張照片。`;
 
 
     await load();
 
 
-  }catch(e){
+  }catch(error){
+
+    status.textContent =
+      "清除失敗：" +
+      error.message;
+
+  }
+
+}
+
+
+/* =========================
+   刪除單張
+========================= */
+
+async function deletePhoto(id){
+
+  const ok =
+    confirm(
+      "確定要永久刪除這張照片嗎？"
+    );
+
+  if(!ok){
+
+    return;
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        `/api/beauticians/${id}`,
+        {
+          method:"DELETE",
+          headers:authHeaders()
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!data.ok){
+
+      throw new Error(
+        data.message ||
+        "刪除失敗"
+      );
+
+    }
+
+
+    await load();
+
+
+  }catch(error){
 
     alert(
-      "清除失敗：" +
-      e.message
+      "刪除失敗：" +
+      error.message
     );
 
   }
@@ -998,90 +1121,80 @@ async function clearToday(){
 }
 
 
-/* -------------------------
-店家設定
-------------------------- */
+/* =========================
+   儲存店家資訊
+========================= */
 
 async function saveSettings(){
 
+  const status =
+    document.querySelector(
+      "#settingsStatus"
+    );
+
+
+  status.textContent =
+    "儲存中...";
+
+
   try{
 
-    const r =
+    const body = {
+
+      businessHours:
+        document.querySelector(
+          "#businessHours"
+        ).value,
+
+      phone:
+        document.querySelector(
+          "#phone"
+        ).value,
+
+      line:
+        document.querySelector(
+          "#line"
+        ).value
+
+    };
+
+
+    const response =
       await fetch(
         "/api/settings",
         {
-          method:"POST",
-
-          headers:{
-            ...authHeaders(),
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              businessHours:
-                document
-                  .getElementById("hours")
-                  .value,
-
-              phone:
-                document
-                  .getElementById("phone")
-                  .value,
-
-              line:
-                document
-                  .getElementById("line")
-                  .value
-
-            })
+          method:"PUT",
+          headers:authHeaders(),
+          body:JSON.stringify(body)
         }
       );
 
 
     const data =
-      await r.json();
+      await response.json();
 
 
-    if(!r.ok){
+    if(!data.ok){
 
       throw new Error(
-        data.error ||
+        data.message ||
         "儲存失敗"
       );
 
     }
 
 
-    alert(
-      "店家設定已成功儲存"
-    );
+    status.textContent =
+      "店家資訊已儲存。";
 
 
-    await load();
+  }catch(error){
 
-
-  }catch(e){
-
-    alert(
+    status.textContent =
       "儲存失敗：" +
-      e.message
-    );
+      error.message;
 
   }
-
-}
-
-
-/* -------------------------
-自動登入
-------------------------- */
-
-if(token){
-
-  showApp();
 
 }
 

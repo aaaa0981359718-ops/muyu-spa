@@ -21,8 +21,9 @@
 >
 
 <title>
-  莯浴SPA會館｜台南優質養生會館
+莯浴SPA會館｜台南優質養生會館
 </title>
+
 
 <style>
 
@@ -61,7 +62,7 @@ a{
 
 
 /* =========================
-   導覽列
+   導覽
 ========================= */
 
 header{
@@ -69,9 +70,11 @@ header{
   top:0;
   z-index:10;
 
-  background:rgba(248,245,241,.94);
+  background:
+    rgba(248,245,241,.94);
 
-  backdrop-filter:blur(14px);
+  backdrop-filter:
+    blur(14px);
 
   border-bottom:
     1px solid #e8dfd7;
@@ -89,21 +92,15 @@ header{
 
 .logo{
   font-size:21px;
-
   font-weight:800;
-
   letter-spacing:3px;
-
   color:#5b4335;
 }
 
 .navlinks{
   display:flex;
-
   gap:22px;
-
   font-size:14px;
-
   color:#625a54;
 }
 
@@ -139,14 +136,12 @@ header{
 
 .hero-inner{
   text-align:center;
-
   max-width:900px;
-
   margin:auto;
 }
 
 
-/* 台南優質養生會館 */
+/* 台南 */
 
 .hero-label{
 
@@ -193,7 +188,7 @@ header{
 }
 
 
-/* 莯浴SPA會館 */
+/* 品牌 */
 
 .hero-title{
 
@@ -295,16 +290,14 @@ header{
 
 .section h2{
   font-size:30px;
-
   margin:
-    0 0 7px;
-
+    0 0
+    7px;
   color:#302925;
 }
 
 .sub{
   color:#817870;
-
   margin:
     0 0
     25px;
@@ -351,12 +344,6 @@ header{
       #eadfd7,
       #d8c7bc
     );
-
-  display:grid;
-
-  place-items:center;
-
-  color:#776960;
 }
 
 .photo img{
@@ -370,21 +357,9 @@ header{
   display:block;
 }
 
-.info{
-
-  padding:20px;
-}
-
-.name{
-
-  font-size:21px;
-
-  font-weight:800;
-}
-
 
 /* =========================
-   預約資訊
+   預約
 ========================= */
 
 .box{
@@ -455,7 +430,7 @@ header{
 
 
 /* =========================
-   頁尾
+   Footer
 ========================= */
 
 footer{
@@ -474,18 +449,13 @@ footer{
 
 
 /* =========================
-   手機底部
+   手機
 ========================= */
 
 .mobilebar{
-
   display:none;
 }
 
-
-/* =========================
-   手機版
-========================= */
 
 @media(max-width:720px){
 
@@ -618,69 +588,74 @@ footer{
 
 <header>
 
-  <div class="wrap nav">
+<div class="wrap nav">
 
-    <div class="logo">
-      莯浴SPA會館
-    </div>
+<div class="logo">
+莯浴SPA會館
+</div>
 
-    <nav class="navlinks">
+<nav class="navlinks">
 
-      <a href="#today">
-        今日報班
-      </a>
+<a href="#today">
+今日報班
+</a>
 
-      <a href="#contact">
-        預約資訊
-      </a>
+<a href="#contact">
+預約資訊
+</a>
 
-      <a href="/admin.html">
-        管理後台
-      </a>
+<a href="/admin.html">
+管理後台
+</a>
 
-    </nav>
+</nav>
 
-  </div>
+</div>
 
 </header>
 
 
 <!-- =========================
-     首頁主視覺
+     首頁
 ========================= -->
 
 <section class="hero">
 
-  <div class="wrap hero-inner">
+<div class="wrap hero-inner">
 
-    <div class="hero-label">
-      台南優質養生會館
-    </div>
+<div class="hero-label">
+台南優質養生會館
+</div>
 
-    <div class="hero-hours">
-      12：00～04：00
-    </div>
 
-    <h1 class="hero-title">
-      莯浴SPA會館
-    </h1>
+<div class="hero-hours">
+12：00～04：00
+</div>
 
-    <p class="hero-slogan">
-      放慢腳步，把時間留給自己
-    </p>
 
-    <p class="hero-desc">
-      查看今日報班與預約資訊，提前預約你的放鬆時光
-    </p>
+<h1 class="hero-title">
+莯浴SPA會館
+</h1>
 
-    <a
-      class="hero-btn"
-      href="#today"
-    >
-      查看今日報班 ↓
-    </a>
 
-  </div>
+<p class="hero-slogan">
+放慢腳步，把時間留給自己
+</p>
+
+
+<p class="hero-desc">
+查看今日報班與預約資訊，提前預約你的放鬆時光
+</p>
+
+
+<a
+  class="hero-btn"
+  href="#today"
+>
+查看今日報班 ↓
+</a>
+
+</div>
 
 </section>
 
@@ -694,41 +669,43 @@ footer{
   id="today"
 >
 
-  <div class="wrap">
+<div class="wrap">
 
-    <h2>
-      📋 今日報班
-    </h2>
+<h2>
+📋 今日報班
+</h2>
 
-    <p class="sub">
-      當日報班即時更新
-    </p>
+<p class="sub">
+目前報班照片
+</p>
 
-    <div
-      id="todayGrid"
-      class="grid"
-    ></div>
 
-    <div class="notice">
+<div
+  id="todayGrid"
+  class="grid"
+></div>
 
-      <b>
-        ✨ 今日報班即時更新
-      </b>
 
-      <p>
-        實際報班資訊依管理後台公告為準，
-        建議提前預約。
-      </p>
+<div class="notice">
 
-    </div>
+<b>
+✨ 今日報班即時更新
+</b>
 
-  </div>
+<p>
+實際報班資訊依管理後台公告為準，
+建議提前預約。
+</p>
+
+</div>
+
+</div>
 
 </section>
 
 
 <!-- =========================
-     預約資訊
+     預約
 ========================= -->
 
 <section
@@ -736,68 +713,74 @@ footer{
   id="contact"
 >
 
-  <div class="wrap">
+<div class="wrap">
 
-    <h2>
-      ⏰ 預約資訊
-    </h2>
+<h2>
+⏰ 預約資訊
+</h2>
 
-    <p class="sub">
-      營業時間與聯絡方式
-    </p>
+<p class="sub">
+營業時間與聯絡方式
+</p>
 
-    <div class="box">
 
-      <div
-        class="hours"
-        id="hours"
-      >
-        12：00～04：00
-      </div>
+<div class="box">
 
-      <div class="contact-line">
-        📞
-        <span id="phone">
-          —
-        </span>
-      </div>
 
-      <div class="contact-line">
-        LINE：
-        <span id="line">
-          —
-        </span>
-      </div>
+<div
+  class="hours"
+  id="hours"
+>
+12：00～04：00
+</div>
 
-      <div class="meta">
-        每日實際報班依當日公告為準，建議提前預約。
-      </div>
 
-    </div>
+<div class="contact-line">
+📞
+<span id="phone">
+—
+</span>
+</div>
 
-  </div>
+
+<div class="contact-line">
+LINE：
+<span id="line">
+—
+</span>
+</div>
+
+
+<div class="meta">
+每日實際報班依當日公告為準，建議提前預約。
+</div>
+
+
+</div>
+
+</div>
 
 </section>
 
 
 <footer>
 
-  <div class="wrap">
-    © 2026 莯浴SPA會館 · 台南優質養生會館
-  </div>
+<div class="wrap">
+© 2026 莯浴SPA會館 · 台南優質養生會館
+</div>
 
 </footer>
 
 
 <div class="mobilebar">
 
-  <a href="#today">
-    📋 今日報班
-  </a>
+<a href="#today">
+📋 今日報班
+</a>
 
-  <a href="#contact">
-    📞 預約資訊
-  </a>
+<a href="#contact">
+📞 預約資訊
+</a>
 
 </div>
 
@@ -813,11 +796,14 @@ async function load(){
         "/api/site"
       );
 
+
     const d =
       await response.json();
 
+
     const settings =
       d.settings || {};
+
 
     document.querySelector(
       "#hours"
@@ -825,10 +811,12 @@ async function load(){
       settings.businessHours ||
       "12：00～04：00";
 
+
     document.querySelector(
       "#phone"
     ).textContent =
       settings.phone || "—";
+
 
     document.querySelector(
       "#line"
@@ -837,62 +825,61 @@ async function load(){
 
 
     /*
-      新版本：
+      最簡單的規則：
 
-      有照片 = 今日報班
+      有照片 = 顯示
 
-      不再判斷：
-      today
-      上班狀態
-      日期
+      沒照片 = 完全不顯示
     */
 
     const photos =
-      Array.isArray(d.beauticians)
-        ? d.beauticians
-        : [];
+      Array.isArray(
+        d.beauticians
+      )
+      ? d.beauticians.filter(
+          x => x && x.photo
+        )
+      : [];
 
 
-    const render =
-      x => `
-
-        <article class="card">
-
-          <div class="photo">
-
-            <img
-              src="${x.photo}"
-              alt="莯浴SPA美容師照片"
-            >
-
-          </div>
-
-          <div class="info">
-
-            <div class="name">
-              ${x.name || "美容師"}
-            </div>
-
-          </div>
-
-        </article>
-
-      `;
+    const grid =
+      document.querySelector(
+        "#todayGrid"
+      );
 
 
-    document.querySelector(
-      "#todayGrid"
-    ).innerHTML =
+    if(!photos.length){
 
-      photos.length
-
-      ? photos.map(render).join("")
-
-      : `
+      grid.innerHTML =
+        `
         <div class="box">
           今日尚未公告報班。
         </div>
-      `;
+        `;
+
+      return;
+    }
+
+
+    grid.innerHTML =
+      photos.map(
+        item => `
+
+          <article class="card">
+
+            <div class="photo">
+
+              <img
+                src="${item.photo}"
+                alt="莯浴SPA報班照片"
+              >
+
+            </div>
+
+          </article>
+
+        `
+      ).join("");
 
 
   }catch(error){
@@ -902,7 +889,6 @@ async function load(){
     document.querySelector(
       "#todayGrid"
     ).innerHTML =
-
       `
       <div class="box">
         資料讀取失敗，請稍後再試。
@@ -918,4 +904,5 @@ load();
 </script>
 
 </body>
+
 </html>

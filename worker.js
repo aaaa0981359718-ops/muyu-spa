@@ -41,10 +41,13 @@ async function getDB(env) {
     ...(db.settings || {})
   };
 
-  db.beauticians =
-    Array.isArray(db.beauticians)
-      ? db.beauticians
-      : [];
+  /*
+    只保留真正有照片的資料
+    沒有照片的資料直接忽略
+  */
+  db.beauticians = Array.isArray(db.beauticians)
+    ? db.beauticians.filter(x => x && x.photo)
+    : [];
 
   return db;
 }
@@ -65,7 +68,7 @@ async function putDB(env, db) {
 
 
 /* =========================
-   JSON 回應
+   JSON
 ========================= */
 
 function json(data, status = 200) {
@@ -88,7 +91,7 @@ function json(data, status = 200) {
 
 
 /* =========================
-   管理員登入驗證
+   管理員驗證
 ========================= */
 
 async function checkAuth(request, env) {
@@ -102,10 +105,10 @@ async function checkAuth(request, env) {
 
 
 /* =========================
-   清除目前所有報班照片
+   完全清除照片
 ========================= */
 
-async function clearPhotos(env) {
+async function clearAllPhotos(env) {
 
   const db = await getDB(env);
 
@@ -113,12 +116,13 @@ async function clearPhotos(env) {
     db.beauticians.length;
 
   /*
-    這裡直接清空所有目前照片。
+    最重要的地方：
 
-    不再使用：
-    today
-    上班狀態
-    日期判斷
+    直接把照片陣列清空。
+
+    清除後：
+    網站沒有照片
+    後台沒有照片
   */
 
   db.beauticians = [];
@@ -136,18 +140,22 @@ async function clearPhotos(env) {
 export default {
 
   /* =========================
-     Cloudflare Cron
+     凌晨 04:00 自動清除
   ========================= */
 
   async scheduled(event, env, ctx) {
 
     /*
-      Cron 每小時執行一次。
+      wrangler.toml：
 
-      台灣時間：
-      04:00 = UTC 20:00
+      crons = ["0 * * * *"]
 
-      所以只有 UTC 20:00 執行清除。
+      每小時檢查一次。
+
+      台灣時間 04:00
+      = UTC 20:00
+
+      只有 UTC 20:00 才清除。
 
       00:00 完全不處理。
     */
@@ -164,7 +172,7 @@ export default {
     try {
 
       const removed =
-        await clearPhotos(env);
+        await clearAllPhotos(env);
 
       console.log(
         `04:00 自動清除完成，共刪除 ${removed} 張照片`
@@ -183,7 +191,7 @@ export default {
 
 
   /* =========================
-     網站 API
+     HTTP
   ========================= */
 
   async fetch(request, env) {
@@ -202,7 +210,7 @@ export default {
 
 
       /* =========================
-         管理員登入
+         登入
       ========================= */
 
       if (
@@ -254,7 +262,7 @@ export default {
 
 
       /* =========================
-         以下 API 都需要登入
+         其他 API 必須登入
       ========================= */
 
       if (
@@ -274,7 +282,7 @@ export default {
 
 
       /* =========================
-         儲存店家設定
+         店家設定
       ========================= */
 
       if (
@@ -315,7 +323,7 @@ export default {
 
 
       /* =========================
-         批次上傳照片
+         一次上傳最多 8 張
       ========================= */
 
       if (
@@ -343,7 +351,6 @@ export default {
 
         }
 
-
         if (photos.length > 8) {
 
           return json(
@@ -357,45 +364,29 @@ export default {
 
         }
 
-
         const db =
           await getDB(env);
 
-
-        /*
-          上傳的照片直接成為
-          今日報班照片。
-        */
-
         const newItems =
-          photos.map((photo, index) => ({
+          photos
+            .filter(photo =>
+              typeof photo === "string" &&
+              photo.length > 0
+            )
+            .map(photo => ({
 
-            id:
-              crypto.randomUUID(),
+              id:
+                crypto.randomUUID(),
 
-            name:
-              `美容師${db.beauticians.length + index + 1}`,
+              photo: photo
 
-            no: "",
-
-            nationality: "",
-
-            time: "",
-
-            intro: "",
-
-            photo: photo
-
-          }));
-
+            }));
 
         db.beauticians.push(
           ...newItems
         );
 
-
         await putDB(env, db);
-
 
         return json({
           ok: true,
@@ -406,176 +397,21 @@ export default {
 
 
       /* =========================
-         舊版單張新增 API
-         保留相容性
+         單張刪除
       ========================= */
 
-      if (
-        path === "/api/beauticians" &&
-        method === "POST"
-      ) {
-
-        const body =
-          await request.json();
-
-        const db =
-          await getDB(env);
-
-
-        const item = {
-
-          id:
-            crypto.randomUUID(),
-
-          no:
-            body.no || "",
-
-          name:
-            body.name ||
-            `美容師${db.beauticians.length + 1}`,
-
-          nationality:
-            body.nationality || "",
-
-          time:
-            body.time || "",
-
-          intro:
-            body.intro || "",
-
-          photo:
-            body.photo || ""
-
-        };
-
-
-        db.beauticians.push(item);
-
-        await putDB(env, db);
-
-
-        return json({
-          ok: true,
-          item
-        });
-
-      }
-
-
-      /* =========================
-         修改指定照片資料
-         保留相容性
-      ========================= */
-
-      const itemMatch =
+      const match =
         path.match(
           /^\/api\/beauticians\/([^/]+)$/
         );
 
-
       if (
-        itemMatch &&
-        method === "PUT"
-      ) {
-
-        const id =
-          itemMatch[1];
-
-        const body =
-          await request.json();
-
-        const db =
-          await getDB(env);
-
-        const item =
-          db.beauticians.find(
-            x => x.id === id
-          );
-
-
-        if (!item) {
-
-          return json(
-            {
-              ok: false,
-              message: "找不到照片"
-            },
-            404
-          );
-
-        }
-
-
-        /*
-          不處理 today。
-          新版本沒有上班狀態。
-        */
-
-        if (
-          body.photo !== undefined
-        ) {
-          item.photo =
-            body.photo;
-        }
-
-        if (
-          body.name !== undefined
-        ) {
-          item.name =
-            body.name;
-        }
-
-        if (
-          body.no !== undefined
-        ) {
-          item.no =
-            body.no;
-        }
-
-        if (
-          body.nationality !== undefined
-        ) {
-          item.nationality =
-            body.nationality;
-        }
-
-        if (
-          body.time !== undefined
-        ) {
-          item.time =
-            body.time;
-        }
-
-        if (
-          body.intro !== undefined
-        ) {
-          item.intro =
-            body.intro;
-        }
-
-
-        await putDB(env, db);
-
-
-        return json({
-          ok: true,
-          item
-        });
-
-      }
-
-
-      /* =========================
-         永久刪除指定照片
-      ========================= */
-
-      if (
-        itemMatch &&
+        match &&
         method === "DELETE"
       ) {
 
         const id =
-          itemMatch[1];
+          match[1];
 
         const db =
           await getDB(env);
@@ -583,16 +419,13 @@ export default {
         const before =
           db.beauticians.length;
 
-
         db.beauticians =
           db.beauticians.filter(
             x => x.id !== id
           );
 
-
         if (
-          db.beauticians.length ===
-          before
+          db.beauticians.length === before
         ) {
 
           return json(
@@ -605,9 +438,7 @@ export default {
 
         }
 
-
         await putDB(env, db);
-
 
         return json({
           ok: true
@@ -617,7 +448,7 @@ export default {
 
 
       /* =========================
-         一鍵清除目前報班
+         一鍵清除全部照片
       ========================= */
 
       if (
@@ -626,8 +457,7 @@ export default {
       ) {
 
         const removed =
-          await clearPhotos(env);
-
+          await clearAllPhotos(env);
 
         return json({
           ok: true,
@@ -661,7 +491,6 @@ export default {
     } catch (error) {
 
       console.error(error);
-
 
       return json(
         {

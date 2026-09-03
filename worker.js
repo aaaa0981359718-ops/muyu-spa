@@ -41,13 +41,12 @@ async function getDB(env) {
     ...(db.settings || {})
   };
 
-  /*
-    只保留真正有照片的資料
-    沒有照片的資料直接忽略
-  */
-  db.beauticians = Array.isArray(db.beauticians)
-    ? db.beauticians.filter(x => x && x.photo)
-    : [];
+  db.beauticians =
+    Array.isArray(db.beauticians)
+      ? db.beauticians.filter(
+          x => x && x.photo
+        )
+      : [];
 
   return db;
 }
@@ -105,7 +104,7 @@ async function checkAuth(request, env) {
 
 
 /* =========================
-   完全清除照片
+   完全清除所有照片
 ========================= */
 
 async function clearAllPhotos(env) {
@@ -114,16 +113,6 @@ async function clearAllPhotos(env) {
 
   const removed =
     db.beauticians.length;
-
-  /*
-    最重要的地方：
-
-    直接把照片陣列清空。
-
-    清除後：
-    網站沒有照片
-    後台沒有照片
-  */
 
   db.beauticians = [];
 
@@ -146,16 +135,12 @@ export default {
   async scheduled(event, env, ctx) {
 
     /*
-      wrangler.toml：
-
-      crons = ["0 * * * *"]
-
-      每小時檢查一次。
+      每小時執行一次。
 
       台灣時間 04:00
       = UTC 20:00
 
-      只有 UTC 20:00 才清除。
+      所以只有 UTC 20:00 清除。
 
       00:00 完全不處理。
     */
@@ -262,7 +247,7 @@ export default {
 
 
       /* =========================
-         其他 API 必須登入
+         所有管理 API 都需要登入
       ========================= */
 
       if (
@@ -277,6 +262,28 @@ export default {
           },
           401
         );
+
+      }
+
+
+      /* ==================================================
+         ★★★ 一鍵清除全部照片 ★★★
+
+         必須放在單張刪除路由前面。
+      ================================================== */
+
+      if (
+        path === "/api/beauticians/today" &&
+        method === "DELETE"
+      ) {
+
+        const removed =
+          await clearAllPhotos(env);
+
+        return json({
+          ok: true,
+          removed: removed
+        });
 
       }
 
@@ -323,7 +330,7 @@ export default {
 
 
       /* =========================
-         一次上傳最多 8 張
+         批次上傳
       ========================= */
 
       if (
@@ -369,18 +376,22 @@ export default {
 
         const newItems =
           photos
-            .filter(photo =>
-              typeof photo === "string" &&
-              photo.length > 0
+            .filter(
+              photo =>
+                typeof photo === "string" &&
+                photo.length > 0
             )
-            .map(photo => ({
+            .map(
+              photo => ({
 
-              id:
-                crypto.randomUUID(),
+                id:
+                  crypto.randomUUID(),
 
-              photo: photo
+                photo:
+                  photo
 
-            }));
+              })
+            );
 
         db.beauticians.push(
           ...newItems
@@ -425,7 +436,8 @@ export default {
           );
 
         if (
-          db.beauticians.length === before
+          db.beauticians.length ===
+          before
         ) {
 
           return json(
@@ -442,26 +454,6 @@ export default {
 
         return json({
           ok: true
-        });
-
-      }
-
-
-      /* =========================
-         一鍵清除全部照片
-      ========================= */
-
-      if (
-        path === "/api/beauticians/today" &&
-        method === "DELETE"
-      ) {
-
-        const removed =
-          await clearAllPhotos(env);
-
-        return json({
-          ok: true,
-          removed: removed
         });
 
       }

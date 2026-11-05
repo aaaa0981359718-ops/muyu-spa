@@ -1,21 +1,27 @@
 const KEY = "site";
 
-const DEFAULT_DB = {
-  settings: {
-    businessHours: "12：00～04：00",
-    phone: "",
-    line: ""
+const STORES = {
+  muyu: {
+    id: "muyu",
+    name: "莯浴 SPA 養生館",
+    line: "ww196",
+    phone: "0915626688"
   },
-  beauticians: []
+  huanhuan: {
+    id: "huanhuan",
+    name: "歡歡 SPA",
+    line: "happy527869",
+    phone: "0966951250"
+  },
+  dream17: {
+    id: "dream17",
+    name: "夢十七",
+    line: "",
+    phone: "062824569"
+  }
 };
 
-
-/* =========================
-   讀取資料
-========================= */
-
 async function getDB(env) {
-
   if (!env.MUYU_KV) {
     throw new Error("MUYU_KV 尚未設定");
   }
@@ -23,479 +29,208 @@ async function getDB(env) {
   const raw = await env.MUYU_KV.get(KEY);
 
   if (!raw) {
-
-    const db = structuredClone(DEFAULT_DB);
-
-    await env.MUYU_KV.put(
-      KEY,
-      JSON.stringify(db)
-    );
-
-    return db;
+    return { shifts: [] };
   }
 
   const db = JSON.parse(raw);
 
-  db.settings = {
-    ...DEFAULT_DB.settings,
-    ...(db.settings || {})
-  };
-
-  db.beauticians =
-    Array.isArray(db.beauticians)
-      ? db.beauticians.filter(
-          x => x && x.photo
-        )
-      : [];
+  if (!Array.isArray(db.shifts)) {
+    db.shifts = [];
+  }
 
   return db;
 }
 
-
-/* =========================
-   儲存資料
-========================= */
-
 async function putDB(env, db) {
-
-  await env.MUYU_KV.put(
-    KEY,
-    JSON.stringify(db)
-  );
-
+  await env.MUYU_KV.put(KEY, JSON.stringify(db));
 }
-
-
-/* =========================
-   JSON
-========================= */
 
 function json(data, status = 200) {
-
-  return new Response(
-    JSON.stringify(data),
-    {
-      status,
-      headers: {
-        "content-type":
-          "application/json;charset=UTF-8",
-
-        "cache-control":
-          "no-store"
-      }
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "content-type": "application/json;charset=UTF-8",
+      "cache-control": "no-store"
     }
-  );
-
+  });
 }
-
-
-/* =========================
-   管理員驗證
-========================= */
 
 async function checkAuth(request, env) {
-
-  const token =
-    request.headers.get("Authorization") || "";
-
-  return token ===
-    `Bearer ${env.ADMIN_TOKEN}`;
+  const token = request.headers.get("Authorization") || "";
+  return token === `Bearer ${env.ADMIN_TOKEN}`;
 }
 
-
-/* =========================
-   完全清除所有照片
-========================= */
-
-async function clearAllPhotos(env) {
-
-  const db = await getDB(env);
-
-  const removed =
-    db.beauticians.length;
-
-  db.beauticians = [];
-
-  await putDB(env, db);
-
-  return removed;
+function validShift(body) {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(body.date || "") &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(body.startTime || "") &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(body.endTime || "") &&
+    Object.prototype.hasOwnProperty.call(STORES, body.storeId)
+  );
 }
-
-
-/* =========================
-   Worker
-========================= */
 
 export default {
-
-  /* =========================
-     凌晨 04:00 自動清除
-  ========================= */
-
-  async scheduled(event, env, ctx) {
-
-    /*
-      每小時執行一次。
-
-      台灣時間 04:00
-      = UTC 20:00
-
-      所以只有 UTC 20:00 清除。
-
-      00:00 完全不處理。
-    */
-
-    const now = new Date();
-
-    const utcHour =
-      now.getUTCHours();
-
-    if (utcHour !== 20) {
-      return;
-    }
-
-    try {
-
-      const removed =
-        await clearAllPhotos(env);
-
-      console.log(
-        `04:00 自動清除完成，共刪除 ${removed} 張照片`
-      );
-
-    } catch (error) {
-
-      console.error(
-        "04:00 自動清除失敗",
-        error
-      );
-
-    }
-
+  async scheduled() {
+    // 新版不再自動刪除報班資料。
   },
 
-
-  /* =========================
-     HTTP
-  ========================= */
-
   async fetch(request, env) {
-
-    const url =
-      new URL(request.url);
-
-    const path =
-      url.pathname;
-
-    const method =
-      request.method;
-
+    const url = new URL(request.url);
+    const path = url.pathname;
+    const method = request.method;
 
     try {
+      if (path === "/api/login" && method === "POST") {
+        const body = await request.json();
 
-
-      /* =========================
-         登入
-      ========================= */
-
-      if (
-        path === "/api/login" &&
-        method === "POST"
-      ) {
-
-        const body =
-          await request.json();
-
-        if (
-          body.password !==
-          env.ADMIN_PASSWORD
-        ) {
-
-          return json(
-            {
-              ok: false,
-              message: "密碼錯誤"
-            },
-            401
-          );
-
+        if (body.password !== env.ADMIN_PASSWORD) {
+          return json({
+            ok: false,
+            message: "密碼錯誤"
+          }, 401);
         }
 
         return json({
           ok: true,
           token: env.ADMIN_TOKEN
         });
-
       }
 
+      if (path === "/api/site" && method === "GET") {
+        const db = await getDB(env);
 
-      /* =========================
-         公開網站資料
-      ========================= */
+        const shifts = db.shifts
+          .filter(item =>
+            item &&
+            item.id &&
+            item.date &&
+            item.startTime &&
+            item.endTime &&
+            STORES[item.storeId]
+          )
+          .sort((a, b) =>
+            a.date.localeCompare(b.date)
+          );
 
-      if (
-        path === "/api/site" &&
-        method === "GET"
-      ) {
-
-        const db =
-          await getDB(env);
-
-        return json(db);
-
+        return json({
+          name: "台南按摩・SPA・養生館",
+          profile: {
+            number: "66",
+            photo: "/no66.jpg"
+          },
+          shifts,
+          stores: STORES
+        });
       }
-
-
-      /* =========================
-         所有管理 API 都需要登入
-      ========================= */
 
       if (
         path.startsWith("/api/") &&
         !(await checkAuth(request, env))
       ) {
-
-        return json(
-          {
-            ok: false,
-            message: "未授權"
-          },
-          401
-        );
-
-      }
-
-
-      /* ==================================================
-         ★★★ 一鍵清除全部照片 ★★★
-
-         必須放在單張刪除路由前面。
-      ================================================== */
-
-      if (
-        path === "/api/beauticians/today" &&
-        method === "DELETE"
-      ) {
-
-        const removed =
-          await clearAllPhotos(env);
-
         return json({
-          ok: true,
-          removed: removed
-        });
-
+          ok: false,
+          message: "未授權，請重新登入"
+        }, 401);
       }
 
+      if (path === "/api/shifts" && method === "POST") {
+        const body = await request.json();
 
-      /* =========================
-         店家設定
-      ========================= */
+        if (!validShift(body)) {
+          return json({
+            ok: false,
+            message: "日期、時間或店家資料不正確"
+          }, 400);
+        }
 
-      if (
-        path === "/api/settings" &&
-        method === "PUT"
-      ) {
+        const db = await getDB(env);
 
-        const body =
-          await request.json();
-
-        const db =
-          await getDB(env);
-
-        db.settings = {
-
-          ...db.settings,
-
-          businessHours:
-            body.businessHours ||
-            "12：00～04：00",
-
-          phone:
-            body.phone || "",
-
-          line:
-            body.line || ""
-
+        const item = {
+          id: crypto.randomUUID(),
+          date: body.date,
+          startTime: body.startTime,
+          endTime: body.endTime,
+          storeId: body.storeId
         };
 
-        await putDB(env, db);
-
-        return json({
-          ok: true,
-          settings: db.settings
-        });
-
-      }
-
-
-      /* =========================
-         批次上傳
-      ========================= */
-
-      if (
-        path === "/api/beauticians/batch" &&
-        method === "POST"
-      ) {
-
-        const body =
-          await request.json();
-
-        const photos =
-          Array.isArray(body.photos)
-            ? body.photos
-            : [];
-
-        if (!photos.length) {
-
-          return json(
-            {
-              ok: false,
-              message: "沒有收到照片"
-            },
-            400
-          );
-
-        }
-
-        if (photos.length > 8) {
-
-          return json(
-            {
-              ok: false,
-              message:
-                "一次最多上傳 8 張照片"
-            },
-            400
-          );
-
-        }
-
-        const db =
-          await getDB(env);
-
-        const newItems =
-          photos
-            .filter(
-              photo =>
-                typeof photo === "string" &&
-                photo.length > 0
-            )
-            .map(
-              photo => ({
-
-                id:
-                  crypto.randomUUID(),
-
-                photo:
-                  photo
-
-              })
-            );
-
-        db.beauticians.push(
-          ...newItems
-        );
+        db.shifts.push(item);
 
         await putDB(env, db);
 
         return json({
           ok: true,
-          added: newItems.length
+          shift: item
         });
-
       }
 
+      const match = path.match(/^\/api\/shifts\/([^/]+)$/);
 
-      /* =========================
-         單張刪除
-      ========================= */
+      if (match && method === "PUT") {
+        const body = await request.json();
 
-      const match =
-        path.match(
-          /^\/api\/beauticians\/([^/]+)$/
-        );
-
-      if (
-        match &&
-        method === "DELETE"
-      ) {
-
-        const id =
-          match[1];
-
-        const db =
-          await getDB(env);
-
-        const before =
-          db.beauticians.length;
-
-        db.beauticians =
-          db.beauticians.filter(
-            x => x.id !== id
-          );
-
-        if (
-          db.beauticians.length ===
-          before
-        ) {
-
-          return json(
-            {
-              ok: false,
-              message: "找不到照片"
-            },
-            404
-          );
-
+        if (!validShift(body)) {
+          return json({
+            ok: false,
+            message: "日期、時間或店家資料不正確"
+          }, 400);
         }
+
+        const db = await getDB(env);
+        const item = db.shifts.find(x => x.id === match[1]);
+
+        if (!item) {
+          return json({
+            ok: false,
+            message: "找不到這筆報班"
+          }, 404);
+        }
+
+        item.date = body.date;
+        item.startTime = body.startTime;
+        item.endTime = body.endTime;
+        item.storeId = body.storeId;
 
         await putDB(env, db);
 
         return json({
-          ok: true
+          ok: true,
+          shift: item
         });
-
       }
 
+      if (match && method === "DELETE") {
+        const db = await getDB(env);
+        const before = db.shifts.length;
 
-      /* =========================
-         網站檔案
-      ========================= */
+        db.shifts = db.shifts.filter(
+          x => x.id !== match[1]
+        );
+
+        if (db.shifts.length === before) {
+          return json({
+            ok: false,
+            message: "找不到這筆報班"
+          }, 404);
+        }
+
+        await putDB(env, db);
+
+        return json({ ok: true });
+      }
 
       if (env.ASSETS) {
-
-        return env.ASSETS.fetch(
-          request
-        );
-
+        return env.ASSETS.fetch(request);
       }
 
-
-      return new Response(
-        "Not Found",
-        {
-          status: 404
-        }
-      );
-
+      return new Response("Not Found", { status: 404 });
 
     } catch (error) {
-
       console.error(error);
 
-      return json(
-        {
-          ok: false,
-          message:
-            error.message ||
-            "伺服器錯誤"
-        },
-        500
-      );
-
+      return json({
+        ok: false,
+        message: error.message || "伺服器錯誤"
+      }, 500);
     }
-
   }
-
 };

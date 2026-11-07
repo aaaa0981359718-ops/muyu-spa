@@ -1,275 +1,395 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="台南按摩、SPA、養生館推薦。No.66美容按摩師，查看最新上班時間、地點與預約資訊。">
-<meta name="keywords" content="台南按摩,台南SPA,台南養生館,美容按摩,No.66">
-<meta name="robots" content="index,follow">
-<title>台南頂級美容按摩體驗｜No.66</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:#f8f5f0;
-  color:#302923;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif
-}
-a{text-decoration:none;color:inherit}
-.wrap{max-width:900px;margin:auto;padding:0 20px}
-header{
-  background:#f8f5f0;
-  border-bottom:1px solid #e9dfd3;
-  position:sticky;top:0;z-index:10
-}
-.nav{
-  height:65px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between
-}
-.logo{font-size:21px;font-weight:800;letter-spacing:3px}
-.nav a{font-size:14px;color:#75675b}
-.hero{
-  padding:48px 0 35px;
-  text-align:center;
-  background:linear-gradient(145deg,#eee3d7,#faf8f4 65%,#e9ded2)
-}
-.eyebrow{font-size:12px;letter-spacing:4px;color:#9b8069}
-h1{font-size:clamp(29px,7vw,48px);letter-spacing:3px;margin:15px 0}
-.en{font-size:11px;letter-spacing:3px;color:#988575}
-.hero-desc{line-height:2;color:#76685c;font-size:15px}
-.photo-wrap{
-  max-width:520px;
-  margin:30px auto 0;
-  background:#eee5dc;
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 12px 35px #49342118
-}
-.photo-wrap img{
-  display:block;
-  width:100%;
-  height:auto;
-  object-fit:contain
-}
-.section{padding:42px 0}
-.section-title{text-align:center;margin-bottom:25px}
-.section-title h2{font-size:26px;margin:0 0 8px}
-.section-title p{font-size:13px;color:#988b7e;margin:0}
-.card{
-  background:#fff;
-  border:1px solid #eee5dc;
-  border-radius:17px;
-  padding:22px;
-  margin-bottom:16px;
-  box-shadow:0 6px 22px #49342109
-}
-.date{
-  font-size:20px;
-  font-weight:800;
-  color:#805f43
-}
-.time{
-  font-size:22px;
-  font-weight:800;
-  margin:12px 0
-}
-.store{font-size:17px;font-weight:700}
-.contact{
-  margin-top:15px;
-  padding-top:13px;
-  border-top:1px solid #eee8e1;
-  color:#786b60;
-  font-size:14px;
-  line-height:2
-}
-.contact a{color:#846346}
-.empty{
-  text-align:center;
-  padding:30px 15px;
-  background:white;
-  border-radius:16px;
-  color:#8c8177
-}
-.notice{
-  background:#302923;
-  color:#fff;
-  border-radius:17px;
-  padding:22px;
-  text-align:center;
-  line-height:1.9
-}
-.notice p{color:#e0d5ca;font-size:14px}
-footer{
-  text-align:center;
-  padding:30px 15px 85px;
-  color:#988b7e;
-  font-size:12px;
-  line-height:2
-}
-.mobilebar{
-  display:none
-}
-@media(max-width:650px){
-  .mobilebar{
-    display:flex;
-    position:fixed;
-    bottom:0;left:0;right:0;
-    z-index:20;
-    background:#fff;
-    border-top:1px solid #eee5dc;
-    padding:10px 14px;
-    gap:10px
-  }
-  .mobilebar a{
-    flex:1;
-    text-align:center;
-    padding:12px;
-    background:#302923;
-    color:#fff;
-    border-radius:12px;
-    font-weight:700;
-    font-size:14px
-  }
-}
-</style>
+  <title>台南頂級美容按摩體驗｜No.66</title>
+
+  <meta name="description" content="No.66 台南美容按摩師，提供細膩認真的服務體驗。查看最新上班日期、服務地點、營業時間與預約聯絡資訊。">
+  <meta name="keywords" content="台南按摩,台南SPA,台南養生館,台南美容按摩,No.66台南按摩">
+  <meta name="author" content="No.66">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f5f0e8">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="台南頂級美容按摩體驗｜No.66">
+  <meta property="og:description" content="查看 No.66 最新上班時間與預約資訊。">
+  <meta property="og:image" content="https://muyu-spa.aaaa0981359718.workers.dev/MEITU_20261106_115235279.jpg">
+  <meta property="og:url" content="https://muyu-spa.aaaa0981359718.workers.dev/">
+
+  <link rel="canonical" href="https://muyu-spa.aaaa0981359718.workers.dev/">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: #f7f4ef;
+      color: #39332d;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .top {
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: #88765e;
+      border-bottom: 1px solid #e9e0d4;
+    }
+
+    .hero {
+      max-width: 1000px;
+      margin: auto;
+      padding: 55px 22px 35px;
+      text-align: center;
+    }
+
+    .tag {
+      color: #a58a65;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      margin: 0 0 10px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #9b8b77;
+    }
+
+    .hero-text {
+      margin: 22px auto;
+      color: #777066;
+      font-size: 14px;
+      max-width: 480px;
+    }
+
+    .photo-wrap {
+      max-width: 440px;
+      margin: 30px auto 0;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 0 10px 35px rgba(80, 60, 40, .08);
+    }
+
+    .photo-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .number {
+      margin-top: 18px;
+      font-size: 24px;
+      letter-spacing: 5px;
+      color: #927957;
+    }
+
+    .section {
+      max-width: 760px;
+      margin: 30px auto;
+      padding: 35px 22px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 11px;
+      color: #a3917b;
+      letter-spacing: 3px;
+      margin-bottom: 28px;
+    }
+
+    .intro {
+      text-align: center;
+      color: #766e64;
+      font-size: 14px;
+      line-height: 2.2;
+    }
+
+    .shift-card {
+      background: #fff;
+      border: 1px solid #eee6dc;
+      padding: 22px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 18px rgba(80, 60, 40, .04);
+    }
+
+    .shift-date {
+      font-size: 19px;
+      color: #927957;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .shift-time {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .store-name {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .contact a {
+      display: inline-block;
+      padding: 7px 15px;
+      background: #f4efe7;
+      color: #78664e;
+      font-size: 13px;
+      border-radius: 3px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 25px 10px;
+      color: #999087;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 35px 20px 90px;
+      border-top: 1px solid #e9e0d4;
+      color: #948675;
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: #927957;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px;
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid #e9e0d4;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .bottom-bar a {
+      display: block;
+      max-width: 500px;
+      margin: auto;
+      padding: 10px;
+      background: #927957;
+      color: white;
+      letter-spacing: 2px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 25px;
+      }
+
+      .hero {
+        padding-top: 38px;
+      }
+
+      .section {
+        padding: 28px 18px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <div class="wrap nav">
-    <div class="logo">NO.66 SPA</div>
-    <a href="#schedule">查看上班時間 ↓</a>
-  </div>
-</header>
+  <div class="top">NO.66 · TAINAN SPA</div>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="eyebrow">TAINAN · PREMIUM SPA</div>
+  <main>
+    <section class="hero">
+      <div class="tag">TAINAN PREMIUM SPA EXPERIENCE</div>
 
-    <h1>台南頂級美容按摩體驗</h1>
+      <h1>台南頂級美容按摩體驗</h1>
 
-    <div class="en">TAINAN PREMIUM SPA EXPERIENCE</div>
+      <div class="subtitle">極致放鬆・細膩服務</div>
 
-    <p class="hero-desc">
-      極致放鬆・頂級服務<br>
-      27歲的青春活力，搭配細膩認真的服務態度。<br>
-      不追求制式流程，只在乎每一個服務細節。<br>
-      用心程度、服務品質、整體體驗，都值得您親自感受。
+      <p class="hero-text">
+        27歲的青春活力，搭配細膩認真的服務態度。<br>
+        不追求制式流程，只在乎每一個服務細節。<br>
+        用心程度、服務品質、整體體驗，<br>
+        都值得您親自感受。
+      </p>
+
+      <div class="photo-wrap">
+        <img
+          src="/MEITU_20261106_115235279.jpg"
+          alt="No.66 台南美容按摩師個人照片"
+          fetchpriority="high"
+        >
+      </div>
+
+      <div class="number">No.66</div>
+      <div class="subtitle">台南人氣美容按摩師</div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">關於 No.66</h2>
+      <div class="section-subtitle">ABOUT ME</div>
+
+      <div class="intro">
+        用心對待每一次服務。<br>
+        重視細節，也重視每一位客人的感受。<br>
+        希望每一次體驗，都能讓您真正放鬆。
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <h2 class="section-title">最新上班資訊</h2>
+      <div class="section-subtitle">WORKING SCHEDULE</div>
+
+      <div id="shiftList">
+        <div class="empty">報班資料載入中...</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>No.66｜台南美容按摩預約資訊</p>
+    <p>如需客製化網站可私訊聯絡我</p>
+    <p>
+      LINE：
+      <a href="https://line.me/R/ti/p/~handsome_boy930"
+         target="_blank" rel="noopener">
+        handsome_boy930
+      </a>
     </p>
+    <p>© 2026 No.66. All Rights Reserved.</p>
+  </footer>
 
-    <div class="photo-wrap">
-      <img
-        src="/MEITU_20261106_115235279.jpg"
-        alt="No.66 台南美容按摩師"
-        onerror="this.parentElement.innerHTML='<div style=\'padding:40px;color:#806f60\'>照片載入失敗，請確認圖片檔名</div>'"
-      >
-    </div>
-
-    <p style="font-weight:700;letter-spacing:2px;margin-top:22px">
-      No.66｜台南人氣美容按摩師
-    </p>
+  <div class="bottom-bar">
+    <a href="#schedule">查看最新上班時間</a>
   </div>
-</section>
 
-<section class="section" id="schedule">
-  <div class="wrap">
-    <div class="section-title">
-      <h2>上班時間</h2>
-      <p>最新報班資訊・依公告為準</p>
-    </div>
+  <script>
+    const shiftList = document.getElementById("shiftList");
 
-    <div id="shiftList">
-      <div class="empty">正在載入報班資訊⋯</div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="notice">
-      <b>預約專屬放鬆時光</b>
-      <p>請依照報班資訊選擇上班地點，提前聯絡預約。</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  如需客製化網站可私訊聯絡我<br>
-  Line：handsome_boy930<br><br>
-  © 2026 No.66 SPA
-</footer>
-
-<div class="mobilebar">
-  <a href="#schedule">查看上班時間</a>
-</div>
-
-<script>
-async function loadSchedule(){
-  const box=document.getElementById("shiftList");
-
-  try{
-    const response=await fetch("/api/site?v="+Date.now(),{
-      cache:"no-store"
-    });
-
-    if(!response.ok) throw new Error("資料讀取失敗");
-
-    const data=await response.json();
-    const shifts=Array.isArray(data.shifts)?data.shifts:[];
-
-    shifts.sort((a,b)=>{
-      return (a.date+" "+a.startTime).localeCompare(
-        b.date+" "+b.startTime
-      );
-    });
-
-    if(shifts.length===0){
-      box.innerHTML='<div class="empty">目前尚未公告上班時間</div>';
-      return;
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
     }
 
-    box.innerHTML=shifts.map(item=>{
-      const store=data.stores?.[item.storeId];
+    function formatDate(date) {
+      const parts = String(date).split("-");
+      if (parts.length !== 3) return escapeHTML(date);
+      return `${parts[1]}/${parts[2]}`;
+    }
 
-      if(!store) return "";
+    async function loadShifts() {
+      try {
+        const response = await fetch("/api/site?v=" + Date.now(), {
+          cache: "no-store"
+        });
 
-      const parts=item.date.split("-");
-      const dateText=parts.length===3
-        ?`${parts[1]}/${parts[2]}`
-        :item.date;
+        if (!response.ok) {
+          throw new Error("讀取報班資料失敗");
+        }
 
-      const line=store.line
-        ?`<div>LINE：<a href="https://line.me/R/ti/p/@${encodeURIComponent(store.line)}" target="_blank">${store.line}</a></div>`
-        :"";
+        const data = await response.json();
+        const shifts = Array.isArray(data.shifts) ? data.shifts : [];
+        const stores = data.stores || {};
 
-      return `
-        <article class="card">
-          <div class="date">${dateText}</div>
-          <div class="time">
-            ${item.startTime} ～ ${item.endTime}
-          </div>
-          <div class="store">${store.name}</div>
-          <div class="contact">
-            ${line}
-            <div>電話：<a href="tel:${store.phone}">${store.phone}</a></div>
-          </div>
-        </article>
-      `;
-    }).join("");
+        shifts.sort((a, b) => {
+          return (a.date || "").localeCompare(b.date || "");
+        });
 
-  }catch(error){
-    box.innerHTML='<div class="empty">報班資訊暫時無法載入，請稍後再試。</div>';
-    console.error(error);
-  }
-}
+        if (shifts.length === 0) {
+          shiftList.innerHTML =
+            '<div class="empty">目前尚無公開報班資訊，請稍後再查看。</div>';
+          return;
+        }
 
-loadSchedule();
-</script>
+        shiftList.innerHTML = shifts.map(shift => {
+          const store = stores[shift.storeId] || {};
+          const storeName = escapeHTML(store.name || "店家資訊");
+          const date = formatDate(shift.date);
+          const start = escapeHTML(shift.startTime);
+          const end = escapeHTML(shift.endTime);
+          const phone = String(store.phone || "").replace(/[^\d+]/g, "");
+          const line = String(store.line || "").trim();
+
+          let contactHTML = "";
+
+          if (phone) {
+            contactHTML += `
+              <a href="tel:${escapeHTML(phone)}">
+                電話預約
+              </a>
+            `;
+          }
+
+          if (line) {
+            contactHTML += `
+              <a href="https://line.me/R/ti/p/~${encodeURIComponent(line)}"
+                 target="_blank" rel="noopener">
+                LINE 聯絡
+              </a>
+            `;
+          }
+
+          return `
+            <article class="shift-card">
+              <div class="shift-date">${date}</div>
+              <div class="shift-time">${start} ～ ${end}</div>
+              <div class="store-name">${storeName}</div>
+              <div class="contact">${contactHTML}</div>
+            </article>
+          `;
+        }).join("");
+
+      } catch (error) {
+        console.error(error);
+        shiftList.innerHTML =
+          '<div class="empty">目前無法載入報班資訊，請稍後重新整理。</div>';
+      }
+    }
+
+    loadShifts();
+  </script>
 
 </body>
 </html>
